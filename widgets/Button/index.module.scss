@@ -1,0 +1,110 @@
+.button {
+  outline: none;
+  cursor: pointer;
+  position: relative;
+
+  &:active {
+    opacity: 0.64;
+  }
+  &:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+  }
+}
+
+.large {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+}
+
+.medium {
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 14px;
+}
+
+.small {
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 14px;
+}
+
+.primary {
+  background: $backgroundInversePrimary;
+  color: $contentInversePrimary;
+  border: none;
+
+  &:hover{
+    opacity: 0.9;
+  }
+  &:active {
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.secondary {
+  border: 2px solid $borderOpaque;
+  color: $contentPrimary;
+  background: $backgroundPrimary;
+  &:hover{
+    opacity: 0.9;
+  }
+  &:active {
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.text {
+  border: none;
+  color: $accent;
+  padding: 7px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  background: $backgroundPrimary;
+  &:hover {
+    color: $primary;
+  }
+  &:active {
+    color: $primary;
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.floating {
+  position: fixed;
+  border: none;
+  box-shadow: 0px 2px 20px rgba(30, 50, 70, 0.3);
+  background: $backgroundInversePrimary;
+  color: $contentInversePrimary;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.loading {
+  div {
+    border: 2px solid $backgroundPrimary;
+    border-left-color: transparent;
+  }
+}

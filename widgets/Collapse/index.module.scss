@@ -1,0 +1,45 @@
+.collapse {
+  margin: 12px 0;
+  .title {
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: bold;
+    span {
+      font-size: 12px;
+      color: $contentSecondry;
+      margin-left: 12px;
+    }
+  }
+  .card {
+    background: $backgroundPrimary;
+    // background: $backgroundSecondary;
+    border-radius: 8px;
+    padding: 20px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: $contentPrimary;
+  }
+  .cardActive {
+    border-radius: 8px 8px 0 0;
+  }
+  .arrow {
+    transform: rotate(90deg);
+  }
+  .arrowActive {
+    transform: rotate(-90deg);
+  }
+  .children {
+    background: $backgroundPrimary;
+    // background: $backgroundSecondary;
+    padding: 0 18px;
+    border-radius: 0 0 8px 8px;
+    color: $contentSecondry;
+    .child {
+      border-top: 1px solid $borderOpaque;
+      padding: 10px 0 14px 0;
+      font-size: 14px;
+    }
+  }
+}
