@@ -2,7 +2,7 @@ import http from '../../services/http/mixin'
 import { MIXIN_CLIENT_ID, MIXIN_SECRET_KEY } from '../../constants'
 import StorageUtil from '../../utils/storageUtil'
 
-export async function getAccessToken (code) {
+export async function getAccessToken(code) {
   // const verifier = localStorage.getItem('code-verifier')
   const data = {
     client_id: MIXIN_CLIENT_ID,
@@ -16,38 +16,50 @@ export async function getAccessToken (code) {
   }
 }
 
-export function getUser (id) {
+export function getUser(id) {
   return http.get(`/users/${id}`)
 }
 
-export function getProfile () {
+export function getProfile() {
   return http.get('/me')
 }
 
-export function loginFunc (token) {
+export function loginFunc(token) {
   StorageUtil.set('mixin_token', token)
 }
 
-export function getMixinContext () {
+export function getMixinContext() {
   let ctx = {}
-  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.MixinContext) {
+  if (
+    window.webkit &&
+    window.webkit.messageHandlers &&
+    window.webkit.messageHandlers.MixinContext
+  ) {
     ctx = JSON.parse(prompt('MixinContext.getContext()'))
     ctx.platform = ctx.platform || 'iOS'
-  } else if (window.MixinContext && (typeof window.MixinContext.getContext === 'function')) {
+  } else if (
+    window.MixinContext &&
+    typeof window.MixinContext.getContext === 'function'
+  ) {
     ctx = JSON.parse(window.MixinContext.getContext())
     ctx.platform = ctx.platform || 'Android'
   }
   return ctx
 }
 
-export  function reloadTheme (platform) {
+export function reloadTheme(platform) {
   switch (platform) {
     case 'iOS':
-      window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.reloadTheme && window.webkit.messageHandlers.reloadTheme.postMessage('');
+      window.webkit &&
+        window.webkit.messageHandlers &&
+        window.webkit.messageHandlers.reloadTheme &&
+        window.webkit.messageHandlers.reloadTheme.postMessage('')
       return
     case 'Android':
     case 'Desktop':
-      window.MixinContext && (typeof window.MixinContext.reloadTheme === 'function') && window.MixinContext.reloadTheme()
+      window.MixinContext &&
+        typeof window.MixinContext.reloadTheme === 'function' &&
+        window.MixinContext.reloadTheme()
       return
   }
 }

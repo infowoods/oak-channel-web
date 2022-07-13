@@ -12,8 +12,8 @@ const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 import styles from './index.module.scss'
 
 function AuthCallback() {
-  const [ ctx, setCtx ] = useState({})
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [ctx, setCtx] = useState({})
+  const [, dispatch] = useContext(ProfileContext)
   const { push } = useRouter()
   const router = useRouter()
 
@@ -29,9 +29,7 @@ function AuthCallback() {
   useEffect(() => {
     const auth = async (token) => {
       try {
-        const params = {
-          mixin_access_token: token,
-        }
+        const params = { mixin_access_token: token }
         const data = await oakAuth(params)
         console.log('auth data:', data)
         if (data) {
@@ -60,7 +58,6 @@ function AuthCallback() {
     }
 
     query?.code && getToken()
-
   }, [query])
 
   useEffect(() => {

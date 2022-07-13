@@ -22,10 +22,11 @@ function Input(props) {
   } = props
 
   const [, changeValue] = useState()
-  const [ focus, setFocus ] = useState(false)
+  const [focus, setFocus] = useState(false)
   const inputRef = useRef()
 
-  const specialClass = (focus ? styles.focus : '') + (disabled ? styles.disabled : '')
+  const specialClass =
+    (focus ? styles.focus : '') + (disabled ? styles.disabled : '')
 
   useEffect(() => {
     if (!value) return
@@ -85,7 +86,7 @@ function Input(props) {
           <Icon
             type="close-line"
             className={styles.clear}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={handleOnClear}
           />
         )}
@@ -98,15 +99,9 @@ function Input(props) {
 
 Input.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ]),
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   type: PropTypes.oneOf(['text', 'number', 'password', 'digital', 'search']),
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,

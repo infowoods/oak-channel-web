@@ -8,8 +8,8 @@ const owlrss = axios.create({
   timeout: 15000,
   responseType: 'json',
   headers: {
-    'Content-Type': 'application/json;charset=utf-8'
-  }
+    'Content-Type': 'application/json;charset=utf-8',
+  },
 })
 
 owlrss.interceptors.request.use(
@@ -50,36 +50,47 @@ owlrss.interceptors.response.use(
   }
 )
 
-async function request (options) {
+async function request(options) {
   const res = await owlrss.request(options)
   return Promise.resolve(res.data)
 }
 
-export default {
-  post (url, options = {}) {
+const http = {
+  post: (url, options = {}) => {
     const config = {
       url,
       method: 'post',
-      ...options
+      ...options,
     }
     return request(config)
   },
 
-  get (url, options = {}) {
+  get: (url, options = {}) => {
     const config = {
       url,
       method: 'get',
-      ...options
+      ...options,
     }
     return request(config)
   },
 
-  delete (url, options = {}) {
+  put: (url, options = {}) => {
+    const config = {
+      url,
+      method: 'put',
+      ...options,
+    }
+    return request(config)
+  },
+
+  delete: (url, options = {}) => {
     const config = {
       url,
       method: 'delete',
-      ...options
+      ...options,
     }
     return request(config)
-  }
+  },
 }
+
+export default http

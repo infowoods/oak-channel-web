@@ -18,7 +18,6 @@
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-  // border: 1px solid pink;
 }
 
 .avatarWrap {
@@ -54,10 +53,8 @@
     line-height: 32px;
     color: $contentPrimary;
     padding: 4px 10px;
-    background: $backgroundSecondary;
     border-radius: 8px;
     font-size: 14px;
-    // margin-top: 12px;
     &:hover {
       color: $accent;
     }

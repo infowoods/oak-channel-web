@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next'
 import { useForm, Controller } from 'react-hook-form'
 
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import { ProfileContext } from '../../stores/useProfile'
 import toast from 'react-hot-toast'
 import OwlToast from '../../widgets/OwlToast'
@@ -14,27 +13,35 @@ import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
 import TextArea from '../../widgets/TextArea'
 import Loading from '../../widgets/Loading'
-import Button from '../../widgets/Button'
 
-import { authLogin, logout } from '../../utils/loginUtil'
-import { getTopicsList, triggerCreate, modifyTopic } from '../../services/api/amo'
+import { logout } from '../../utils/loginUtil'
+import {
+  getTopicsList,
+  triggerCreate,
+  modifyTopic,
+} from '../../services/api/amo'
 import { copyText } from '../../utils/copyUtil'
 import styles from './index.module.scss'
 
 function Amos() {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [state, dispatch] = useContext(ProfileContext)
   const isLogin = state.userInfo && state.userInfo.user_name
   const { push } = useRouter()
 
-  const [ list, setList ] = useState([])
-  const [ loading, setLoading ] = useState(true)
-  const [ showEdit, setShowEdit ] = useState(false)
-  const [ modifiedTopic, setModifiedTopic ] = useState({})
+  const [list, setList] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [showEdit, setShowEdit] = useState(false)
+  const [modifiedTopic, setModifiedTopic] = useState({})
 
-  const [ modifyLoading, setModifyLoading ] = useState(false)
+  const [modifyLoading, setModifyLoading] = useState(false)
 
-  const { control, handleSubmit, formState: { errors }, clearErrors } = useForm()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm()
 
   const getList = async () => {
     setLoading(true)
@@ -67,7 +74,8 @@ function Amos() {
 
   const handleCreate = async () => {
     const res = await triggerCreate({ order_type: '1' })
-    const payUrl = 'mixin://pay?' +
+    const payUrl =
+      'mixin://pay?' +
       `recipient=${res.recipient_id}` +
       `&asset=${res.asset_id}` +
       `&amount=${res.amount}` +
@@ -89,12 +97,12 @@ function Amos() {
     setModifiedTopic({})
   }
 
-  const handleModify = async(data) => {
+  const handleModify = async (data) => {
     setModifyLoading(true)
     console.log(data.title, data.description)
     const res = await modifyTopic(modifiedTopic.topic_id, {
       title: data.title,
-      description: data.description
+      description: data.description,
     })
     if (res.title) {
       setModifyLoading(false)
@@ -106,56 +114,57 @@ function Amos() {
 
   return (
     <div className={styles.main}>
-      {
-        isLogin ?
-          <p className={styles.mine}>我的</p>
-          :
-          <div className={styles.ufo}><Icon type="ufo" /></div>
-      }
+      {isLogin ? (
+        <p className={styles.mine}>我的</p>
+      ) : (
+        <div className={styles.ufo}>
+          <Icon type="ufo" />
+        </div>
+      )}
 
-      {
-        loading ?
-          <Loading />
-          :
-          <div>
-            {
-              list && list.map((item, idx) => (
-                <div key={idx} className={styles.card}>
-                  <p><span>主题名：</span> {item.title}</p>
-                  <p><span>简介：</span> {item.description || '--'}</p>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div>
+          {list &&
+            list.map((item, idx) => (
+              <div key={idx} className={styles.card}>
+                <p>
+                  <span>主题名：</span> {item.title}
+                </p>
+                <p>
+                  <span>简介：</span> {item.description || '--'}
+                </p>
 
-                  <div className={styles.divider} />
-                  <p
-                    className={styles.edit}
-                    onClick={() => handleEdit(item)}
-                  >
-                    <span>修改主题信息</span> <Icon type="edit" />
-                  </p>
-                  <p
-                    className={styles.copy}
-                    onClick={() => copyText(item.subscription_uri, toast, t)}
-                  >
-                    订阅链接：<span>{item.subscription_uri} <Icon type="copy" /></span>
-                  </p>
+                <div className={styles.divider} />
+                <p className={styles.edit} onClick={() => handleEdit(item)}>
+                  <span>修改主题信息</span> <Icon type="edit" />
+                </p>
+                <p
+                  className={styles.copy}
+                  onClick={() => copyText(item.subscription_uri, toast, t)}
+                >
+                  订阅链接：
+                  <span>
+                    {item.subscription_uri} <Icon type="copy" />
+                  </span>
+                </p>
 
-                  <Icon
-                    type="add-circle"
-                    className={styles.post}
-                    onClick={() => push(`/oak/${item.topic_id}`)}
-                  />
-                </div>
-              ))
-            }
-
-            {
-              isLogin &&
-              <div className={styles.create}>
-                👉 <span onClick={handleCreate}>创建新主题</span>
+                <Icon
+                  type="add-circle"
+                  className={styles.post}
+                  onClick={() => push(`/oak/${item.topic_id}`)}
+                />
               </div>
-            }
-          </div>
-      }
+            ))}
 
+          {isLogin && (
+            <div className={styles.create}>
+              👉 <span onClick={handleCreate}>创建新主题</span>
+            </div>
+          )}
+        </div>
+      )}
 
       <BottomSheet
         t={t}
@@ -166,17 +175,20 @@ function Amos() {
         onCancel={handleClose}
         onConfirm={handleSubmit((data) => handleModify(data))}
       >
-        {
-          modifyLoading ?
+        {modifyLoading ? (
           <div className={styles.modifyLoading}>
             <Loading />
           </div>
-          :
+        ) : (
           <div className={styles.sheet}>
             <div>
               <p className={styles.title}>当前：</p>
-              <p><span>主题名：</span> {modifiedTopic.title}</p>
-              <p><span>简介：</span> {modifiedTopic.description || '--'}</p>
+              <p>
+                <span>主题名：</span> {modifiedTopic.title}
+              </p>
+              <p>
+                <span>简介：</span> {modifiedTopic.description || '--'}
+              </p>
             </div>
 
             <p className={styles.title}>改为：</p>
@@ -189,7 +201,9 @@ function Amos() {
                   render={({ field }) => (
                     <Input
                       className={styles.input}
-                      onChange={() => {clearErrors('title')}}
+                      onChange={() => {
+                        clearErrors('title')
+                      }}
                       {...field}
                       ref={null}
                     />
@@ -198,7 +212,7 @@ function Amos() {
                     required: '不能为空',
                   }}
                 />
-                <p>{ errors?.title?.message }</p>
+                <p>{errors?.title?.message}</p>
               </div>
               <div className={styles.label}>
                 <p>简介：</p>
@@ -208,7 +222,9 @@ function Amos() {
                   render={({ field }) => (
                     <TextArea
                       className={styles.textArea}
-                      onChange={() => {clearErrors('description')}}
+                      onChange={() => {
+                        clearErrors('description')
+                      }}
                       {...field}
                       ref={null}
                     />
@@ -217,11 +233,11 @@ function Amos() {
                     required: '不能为空',
                   }}
                 />
-                <p>{ errors?.description?.message }</p>
+                <p>{errors?.description?.message}</p>
               </div>
             </form>
           </div>
-        }
+        )}
       </BottomSheet>
 
       <OwlToast />

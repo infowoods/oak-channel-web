@@ -26,6 +26,9 @@
 .sendBtn {
   bottom: 48px;
   right: 18px;
+  @include responsive(lg) {
+    right: calc(50vw - 410px);
+  }
   z-index: 99;
   padding: 12px 13px;
 
