@@ -37,14 +37,12 @@ function Details() {
     control: txtControl,
     handleSubmit: handleTxtSubmit,
     formState: { errors: txtErrors },
-    // clearErrors: clearTxtErrors,
   } = useForm()
 
   const {
     control: mdControl,
     handleSubmit: handleMdSubmit,
     formState: { errors: mdErrors },
-    // clearErrors: clearMdErrors,
   } = useForm()
 
   useEffect(() => {
@@ -54,7 +52,7 @@ function Details() {
     }
 
     getDetails()
-  }, [])
+  }, [oid])
 
   const mdeOptions = useMemo(() => {
     return {
@@ -87,12 +85,6 @@ function Details() {
     if (res?.infos_count) {
       setSending(false)
       toast.success('成功发送')
-
-      if (activeTab === 'text') {
-        setText('')
-      } else {
-        setMd('')
-      }
     } else {
       toast.error('发生错误')
       setSending(false)
@@ -123,12 +115,6 @@ function Details() {
                   className={styles.textArea}
                   {...field}
                   rows={10}
-                  // value={text}
-                  // onChange={(val) => {
-                  //   console.log(">>> txt:", val);
-                  //   clearTxtErrors();
-                  //   setText(val);
-                  // }}
                   ref={null}
                 />
               )}
@@ -150,8 +136,6 @@ function Details() {
                 <SimpleMDE
                   className={styles.TextArea}
                   options={mdeOptions}
-                  // value={md}
-                  // onChange={onMdChange}
                   {...field}
                   ref={null}
                 />
@@ -175,7 +159,6 @@ function Details() {
 
       <Button
         type="floating"
-        // type="submit"
         size="medium"
         className={styles.sendBtn}
         loading={sending}
