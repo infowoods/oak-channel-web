@@ -2,62 +2,74 @@ import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { useForm, Controller } from 'react-hook-form'
-
 import dynamic from 'next/dynamic'
-import { ProfileContext } from '../../stores/useProfile'
 import toast from 'react-hot-toast'
-import OwlToast from '../../widgets/OwlToast'
 
-import BottomSheet from '../../widgets/BottomSheet'
+import { ProfileContext } from '../../stores/useProfile'
+
+const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
+const BottomSheet = dynamic(() => import('../../widgets/BottomSheet'))
+const Overlay = dynamic(() => import('../../widgets/Overlay'))
+const QrCodeSheet = dynamic(() => import('./QrCodeSheet'))
+
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
 import TextArea from '../../widgets/TextArea'
 import Loading from '../../widgets/Loading'
 
 import { logout } from '../../utils/loginUtil'
+import { copyText } from '../../utils/copyUtil'
+import storageUtil from '../../utils/storageUtil'
+
 import {
   getTopicsList,
   triggerCreate,
   modifyTopic,
+  getOrder,
 } from '../../services/api/amo'
-import { copyText } from '../../utils/copyUtil'
+
 import styles from './index.module.scss'
 
-function Amos() {
+function Home() {
   const { t } = useTranslation('common')
   const [state, dispatch] = useContext(ProfileContext)
-  const isLogin = state.userInfo && state.userInfo.user_name
+  const isLogin = state.isLogin
   const { push } = useRouter()
 
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(true)
   const [showEdit, setShowEdit] = useState(false)
+  const [check, setCheck] = useState(false)
   const [modifiedTopic, setModifiedTopic] = useState({})
+  const [payUrl, setPayUrl] = useState('')
+  const [orderId, setOrderId] = useState('')
+  const [intervalId, setIntervalId] = useState(null)
 
+  const [pushIdx, setPushIdx] = useState(null)
+  const [createLoading, setCreateLoading] = useState(false)
   const [modifyLoading, setModifyLoading] = useState(false)
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    clearErrors,
+    reset,
   } = useForm()
 
   const getList = async () => {
     setLoading(true)
     const data = await getTopicsList()
-    console.log('oak data:', data)
     setLoading(false)
     setList(data)
+    // setList([])
   }
 
   useEffect(() => {
+    console.log('>>> home state:', state)
     if (isLogin) {
-      console.log('+++ login')
       try {
         getList()
       } catch (error) {
-        console.log('err')
         if (error?.action === 'logout') {
           toast.error(t('auth_expire'))
           setLoading(false)
@@ -66,24 +78,46 @@ function Amos() {
         }
       }
     } else {
-      console.log('not Login')
-      // logout(dispatch)
+      console.log('home not login')
       setLoading(false)
     }
   }, [isLogin])
 
+  useEffect(() => {
+    if (check) {
+      const orderInterval = setInterval(async () => {
+        const res = await getOrder({ trace_id: orderId })
+        if (res?.topic_token) {
+          toast.success(t('create_success'))
+          setCheck(false)
+          setOrderId('')
+          getList()
+        }
+      }, 3000)
+      setIntervalId(orderInterval)
+    } else {
+      setOrderId('')
+      intervalId && clearInterval(intervalId)
+    }
+  }, [check])
+
   const handleCreate = async () => {
+    setCreateLoading(true)
     const res = await triggerCreate({ order_type: '1' })
+    setCreateLoading(false)
     const payUrl =
       'mixin://pay?' +
-      `recipient=${res.recipient_id}` +
-      `&asset=${res.asset_id}` +
-      `&amount=${res.amount}` +
-      `&memo=${res.memo}` +
-      `&trace=${res.trace_id}`
-    window.open(payUrl)
-
-    // 付完款需要请求主题接口
+      `recipient=${res?.recipient_id}` +
+      `&asset=${res?.asset_id}` +
+      `&amount=${res?.amount}` +
+      `&memo=${res?.memo}` +
+      `&trace=${res?.trace_id}`
+    setOrderId(res?.trace_id)
+    if (storageUtil.get('platform') === 'browser') {
+      setPayUrl(payUrl)
+    } else {
+      window.open(payUrl)
+    }
   }
 
   const handleEdit = (val) => {
@@ -95,6 +129,7 @@ function Amos() {
     setShowEdit(false)
     setModifyLoading(false)
     setModifiedTopic({})
+    reset()
   }
 
   const handleModify = async (data) => {
@@ -104,29 +139,29 @@ function Amos() {
       title: data.title,
       description: data.description,
     })
-    if (res.title) {
+    if (res?.title) {
       setModifyLoading(false)
       setShowEdit(false)
       toast.success(t('modify_success'))
       getList()
+    } else {
+      toast.error(t('modify_failed'))
     }
   }
 
   return (
     <div className={styles.main}>
-      {isLogin ? (
-        <p className={styles.mine}>我的</p>
-      ) : (
+      <p className={styles.mine}>我的</p>
+
+      {loading ? (
+        <Loading className={styles.homeLoading} />
+      ) : isLogin === false ? (
         <div className={styles.ufo}>
           <Icon type="ufo" />
         </div>
-      )}
-
-      {loading ? (
-        <Loading />
       ) : (
         <div>
-          {list &&
+          {list.length > 0 &&
             list.map((item, idx) => (
               <div key={idx} className={styles.card}>
                 <p>
@@ -150,21 +185,32 @@ function Amos() {
                   </span>
                 </p>
 
-                <Icon
-                  type="add-circle"
-                  className={styles.post}
-                  onClick={() => push(`/oak/${item.topic_id}`)}
-                />
+                {pushIdx === idx ? (
+                  <Loading size={26} className={styles.pushLoading} />
+                ) : (
+                  <Icon
+                    type="add-circle"
+                    className={styles.post}
+                    onClick={() => {
+                      setPushIdx(idx)
+                      push(`/oak/${item.topic_id}`)
+                    }}
+                  />
+                )}
               </div>
             ))}
 
-          {isLogin && (
-            <div className={styles.create}>
-              👉 <span onClick={handleCreate}>创建新主题</span>
-            </div>
-          )}
+          <div className={styles.create}>
+            👉
+            <span onClick={handleCreate}>创建新主题</span>
+            {createLoading && (
+              <Loading size={14} className={styles.createLoading} />
+            )}
+          </div>
         </div>
       )}
+
+      {}
 
       <BottomSheet
         t={t}
@@ -199,14 +245,7 @@ function Amos() {
                   name="title"
                   control={control}
                   render={({ field }) => (
-                    <Input
-                      className={styles.input}
-                      onChange={() => {
-                        clearErrors('title')
-                      }}
-                      {...field}
-                      ref={null}
-                    />
+                    <Input className={styles.input} {...field} ref={null} />
                   )}
                   rules={{
                     required: '不能为空',
@@ -222,9 +261,6 @@ function Amos() {
                   render={({ field }) => (
                     <TextArea
                       className={styles.textArea}
-                      onChange={() => {
-                        clearErrors('description')
-                      }}
                       {...field}
                       ref={null}
                     />
@@ -240,9 +276,28 @@ function Amos() {
         )}
       </BottomSheet>
 
+      <QrCodeSheet
+        t={t}
+        show={payUrl}
+        id={payUrl}
+        onClose={() => setPayUrl('')}
+        onCancel={() => setPayUrl('')}
+        onConfirm={() => {
+          setPayUrl('')
+          setCheck(true)
+        }}
+      />
+
+      <Overlay
+        t={t}
+        desc={t('checking_pay')}
+        visible={check}
+        onCancel={() => setCheck(false)}
+      />
+
       <OwlToast />
     </div>
   )
 }
 
-export default Amos
+export default Home

@@ -1,7 +1,7 @@
 .wrap {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 0 10px 12px 10px;
+  padding: 0 10px 60px 10px;
   background: $backgroundPrimary;
   min-height: 100vh;
   @include responsive(lg) {
@@ -17,7 +17,6 @@
 .avatarWrap, .login {
   display: flex;
   justify-content: flex-end;
-  cursor: pointer;
 }
 
 .avatarWrap {
@@ -30,7 +29,6 @@
       vertical-align: middle;
       font-size: 28px; // 28+8=36
       color: $contentPrimary;
-      cursor: pointer;
       padding: 4px;
       margin-right: 12px;
       &:hover {
@@ -55,6 +53,7 @@
     padding: 4px 10px;
     border-radius: 8px;
     font-size: 14px;
+    cursor: pointer;
     &:hover {
       color: $accent;
     }
@@ -62,7 +61,7 @@
 }
 
 .noTopBar {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
   min-height: 100vh;
   border-left: 1px solid $borderOpaque;
@@ -71,10 +70,10 @@
 }
 
 .notInit {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
   // min-height: calc(100vh - 12px);
-  min-height: 100vh;
+  // min-height: 100vh;
   background: $backgroundPrimary;
 }
 

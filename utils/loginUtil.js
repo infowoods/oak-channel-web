@@ -9,7 +9,7 @@ export function authLogin() {
   AuthMixin.requestCode(true)
 }
 
-export function logout (dispatch) {
+export function logout(dispatch) {
   dispatch({
     type: 'profile',
     profile: {},
@@ -21,6 +21,10 @@ export function logout (dispatch) {
   dispatch({
     type: 'groupInfo',
     groupInfo: {},
+  })
+  dispatch({
+    type: 'isLogin',
+    groupInfo: null,
   })
   console.log('logout')
   StorageUtil.del(OAK_USER)

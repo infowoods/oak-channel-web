@@ -8,8 +8,8 @@ const oakscript = axios.create({
   timeout: 15000,
   responseType: 'json',
   headers: {
-    'Content-Type': 'application/json;charset=utf-8'
-  }
+    'Content-Type': 'application/json;charset=utf-8',
+  },
 })
 
 oakscript.interceptors.request.use(
@@ -27,8 +27,7 @@ oakscript.interceptors.request.use(
 oakscript.interceptors.response.use(
   (res) => {
     // res: config, data, headers, status, statusText
-    // res.data: message
-    console.log('>>> res is:', res)
+    // res.data
     if (!res.data) {
       return Promise.reject({ code: -1 })
     }
@@ -40,12 +39,15 @@ oakscript.interceptors.response.use(
       return Promise.reject({ code: error.code, message: error.description })
     }
     if (res.status === 403 || res.status === 401) {
-      return Promise.reject({ action: 'logout', status: res.status, data: res.data })
+      return Promise.reject({
+        action: 'logout',
+        status: res.status,
+        data: res.data,
+      })
     }
     if (res.status === 202) {
       return Promise.reject({ status: res.status, data: res.data })
-    }
-    else {
+    } else {
       return Promise.resolve(res.data)
     }
   },
@@ -56,19 +58,18 @@ oakscript.interceptors.response.use(
       return Promise.reject({
         action: 'logout',
         status: err.response.status,
-        data: err.response.data
+        data: err.response.data,
       })
     }
-    // if (err.response && err.response.data) {
-    //   return Promise.reject(err.response.data)
-    // }
-    // else {
-    //   return Promise.reject({ code: -1 })
-    // }
+    if (err.response && err.response.data) {
+      return Promise.reject(err.response.data)
+    } else {
+      return Promise.reject({ code: -1 })
+    }
   }
 )
 
-async function request (options) {
+async function request(options) {
   const res = await oakscript.request(options)
   return Promise.resolve(res)
 }
@@ -78,7 +79,7 @@ const http = {
     const config = {
       url,
       method: 'post',
-      ...options
+      ...options,
     }
     return request(config)
   },
@@ -87,7 +88,7 @@ const http = {
     const config = {
       url,
       method: 'get',
-      ...options
+      ...options,
     }
     return request(config)
   },
@@ -96,7 +97,7 @@ const http = {
     const config = {
       url,
       method: 'put',
-      ...options
+      ...options,
     }
     return request(config)
   },
@@ -105,10 +106,10 @@ const http = {
     const config = {
       url,
       method: 'delete',
-      ...options
+      ...options,
     }
     return request(config)
-  }
+  },
 }
 
 export default http

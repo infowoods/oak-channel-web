@@ -37,6 +37,10 @@ function AuthCallback() {
             type: 'userInfo',
             userInfo: data,
           })
+          dispatch({
+            type: 'isLogin',
+            isLogin: true,
+          })
           storageUtil.set('user_info', data) // userInfo persistence
 
           if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {

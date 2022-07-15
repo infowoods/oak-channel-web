@@ -1,15 +1,21 @@
 .bottomNav {
   position: fixed;
   bottom: 0;
-  border: 1px solid pink;
   width: 100%;
-  max-width: 820px;
+  max-width: 680px;
+  left: calc(50vw - 340px);
   background-color: $backgroundPrimary;
+
   @include responsive(xs) {
-    max-width: calc(100vw - 18px);
+    left: 0;
   }
 
-  >div {
+  @include responsive(lg) {
+    border-left: 1px solid $borderOpaque;
+    border-right: 1px solid $borderOpaque;
+  }
+
+  > div {
     display: flex;
     justify-content: space-around;
   }
@@ -19,11 +25,11 @@
   cursor: pointer;
   text-align: center;
   color: $contentSecondry;
-  >i {
-    font-size: 32px;
+  > i {
+    font-size: 28px;
     padding-top: 6px;
   }
-  >p {
+  > p {
     font-size: 14px;
     padding-bottom: 6px;
   }
@@ -35,11 +41,11 @@
 .active {
   text-align: center;
   color: $contentPrimary !important;
-  >i {
-    font-size: 32px;
+  > i {
+    font-size: 28px;
     padding-top: 6px;
   }
-  >p {
+  > p {
     font-size: 14px;
     padding-bottom: 6px;
   }
