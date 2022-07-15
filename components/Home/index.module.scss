@@ -13,11 +13,11 @@
 }
 
 .ufo {
-  margin-top: 40%;
+  margin-top: 30%;
   text-align: center;
 
   >i {
-    font-size: 120px;
+    font-size: 100px;
     color: $contentSecondry;
   }
 }
@@ -82,7 +82,7 @@
 .pushLoading {
   display: inline;
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -101,7 +101,7 @@
 }
 
 .sheet {
-  padding: 0 24px;
+  padding: 0 12px;
   margin-bottom: 48px;
   font-size: 14px;
   color: $contentPrimary;
@@ -117,21 +117,41 @@
 
   .title {
     font-weight: bold;
-    margin-bottom: 4px;
+    font-size: 15px;
+    margin-bottom: 8px;
   }
 
   .label {
     >p {
       line-height: 21px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     .input {
-      margin-bottom: 4px;
+      width: 100%;
+      background-color: $backgroundPrimary;
     }
     .textArea {
       width: 100%;
     }
   }
+
+  .error {
+    color: $notice;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+}
+
+.current {
+  background-color: $backgroundSecondary;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.modifyTo {
+  background-color: $backgroundSecondary;
+  border-radius: 6px;
+  padding: 12px;
 }
 
 .modifyLoading {

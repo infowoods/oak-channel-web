@@ -22,14 +22,13 @@ function Layout({ children }) {
   const isLogin = state.userInfo && state.userInfo.user_name
 
   const navHref = ['/', '/user']
-  console.log('>>> layout login? ', isLogin)
 
   const getBarColor = (path) => {
     reloadTheme(platform)
     if (theme === 'dark') {
-      return path === '/' ? '#080808' : '#1E1E1E'
+      return path.includes('/oak/') ? '#1E1E1E' : '#080808'
     }
-    return path === '/' ? '#FFFFFF' : '#F4F6F7'
+    return path.includes('/oak/') ? '#F4F6F7' : '#FFFFFF'
   }
 
   const backLink = (path) => {

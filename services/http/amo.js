@@ -55,6 +55,7 @@ oakscript.interceptors.response.use(
     // err.response: config, data, headers, status, statusText
     console.log('>>> err res:', err.response)
     if (err.response.status === 403 || err.response.status === 401) {
+      console.log('>> caught 401')
       return Promise.reject({
         action: 'logout',
         status: err.response.status,

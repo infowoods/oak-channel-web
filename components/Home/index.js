@@ -58,25 +58,24 @@ function Home() {
 
   const getList = async () => {
     setLoading(true)
-    const data = await getTopicsList()
-    setLoading(false)
-    setList(data)
-    // setList([])
+    try {
+      const data = await getTopicsList()
+      setLoading(false)
+      setList(data)
+    } catch (error) {
+      if (error?.action === 'logout') {
+        toast.error(t('auth_expire'))
+        setLoading(false)
+        logout(dispatch)
+        return
+      }
+    }
   }
 
   useEffect(() => {
     console.log('>>> home state:', state)
     if (isLogin) {
-      try {
-        getList()
-      } catch (error) {
-        if (error?.action === 'logout') {
-          toast.error(t('auth_expire'))
-          setLoading(false)
-          logout(dispatch)
-          return
-        }
-      }
+      getList()
     } else {
       console.log('home not login')
       setLoading(false)
@@ -116,6 +115,7 @@ function Home() {
     if (storageUtil.get('platform') === 'browser') {
       setPayUrl(payUrl)
     } else {
+      setCheck(true)
       window.open(payUrl)
     }
   }
@@ -151,8 +151,6 @@ function Home() {
 
   return (
     <div className={styles.main}>
-      <p className={styles.mine}>我的</p>
-
       {loading ? (
         <Loading className={styles.homeLoading} />
       ) : isLogin === false ? (
@@ -161,6 +159,8 @@ function Home() {
         </div>
       ) : (
         <div>
+          <p className={styles.mine}>我的</p>
+
           {list.length > 0 &&
             list.map((item, idx) => (
               <div key={idx} className={styles.card}>
@@ -210,8 +210,7 @@ function Home() {
         </div>
       )}
 
-      {}
-
+      {/* Modify topic data */}
       <BottomSheet
         t={t}
         show={showEdit}
@@ -227,7 +226,7 @@ function Home() {
           </div>
         ) : (
           <div className={styles.sheet}>
-            <div>
+            <div className={styles.current}>
               <p className={styles.title}>当前：</p>
               <p>
                 <span>主题名：</span> {modifiedTopic.title}
@@ -237,41 +236,43 @@ function Home() {
               </p>
             </div>
 
-            <p className={styles.title}>改为：</p>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.label}>
-                <p>主题名：</p>
-                <Controller
-                  name="title"
-                  control={control}
-                  render={({ field }) => (
-                    <Input className={styles.input} {...field} ref={null} />
-                  )}
-                  rules={{
-                    required: '不能为空',
-                  }}
-                />
-                <p>{errors?.title?.message}</p>
-              </div>
-              <div className={styles.label}>
-                <p>简介：</p>
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field }) => (
-                    <TextArea
-                      className={styles.textArea}
-                      {...field}
-                      ref={null}
-                    />
-                  )}
-                  rules={{
-                    required: '不能为空',
-                  }}
-                />
-                <p>{errors?.description?.message}</p>
-              </div>
-            </form>
+            <div className={styles.modifyTo}>
+              <p className={styles.title}>改为：</p>
+              <form onSubmit={handleSubmit}>
+                <div className={styles.label}>
+                  <p>主题名：</p>
+                  <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                      <Input className={styles.input} {...field} ref={null} />
+                    )}
+                    rules={{
+                      required: '*不能为空',
+                    }}
+                  />
+                  <p className={styles.error}>{errors?.title?.message}</p>
+                </div>
+                <div className={styles.label}>
+                  <p>简介：</p>
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <TextArea
+                        className={styles.textArea}
+                        {...field}
+                        ref={null}
+                      />
+                    )}
+                    rules={{
+                      required: '*不能为空',
+                    }}
+                  />
+                  <p className={styles.error}>{errors?.description?.message}</p>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </BottomSheet>

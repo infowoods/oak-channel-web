@@ -24,7 +24,7 @@ export function logout(dispatch) {
   })
   dispatch({
     type: 'isLogin',
-    groupInfo: null,
+    isLogin: null,
   })
   console.log('logout')
   StorageUtil.del(OAK_USER)
