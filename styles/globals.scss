@@ -36,3 +36,17 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance:none;
 }
+
+// MDEditor
+.editor-toolbar {
+  background-color: $backgroundSecondary;
+  > button {
+    color: $contentPrimary;
+    &:hover {
+      background-color: $backgroundTertiary !important;
+    }
+  }
+  .active {
+    background-color: $backgroundTertiary !important;
+  }
+}

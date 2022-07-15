@@ -20,6 +20,7 @@ function QrCodeSheet(props) {
         <QRCode
           value={id}
           size={240}
+          includeMargin={true}
           imageSettings={{
             src: '/mixin-logo.png',
             width: 50,

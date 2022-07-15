@@ -133,12 +133,7 @@ function Details() {
               name="markdown"
               control={mdControl}
               render={({ field }) => (
-                <SimpleMDE
-                  className={styles.TextArea}
-                  options={mdeOptions}
-                  {...field}
-                  ref={null}
-                />
+                <SimpleMDE options={mdeOptions} {...field} ref={null} />
               )}
               rules={{
                 required: 'md 不能为空',

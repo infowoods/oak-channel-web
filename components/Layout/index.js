@@ -61,7 +61,6 @@ function Layout({ children }) {
     ctx.appearance &&
       document.documentElement.setAttribute('data-theme', ctx.appearance)
     setTheme(ctx.appearance || 'light')
-    // document.documentElement.setAttribute('data-theme', 'dark')
 
     if (
       ctx?.locale &&
