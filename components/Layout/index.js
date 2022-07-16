@@ -23,7 +23,7 @@ function Layout({ children }) {
   const { pathname, push } = useRouter()
   const [theme, setTheme] = useState('')
   const [platform, setPlatform] = useState(false)
-  const isLogin = state.userInfo && state.userInfo.user_name
+  const isLogin = state.isLogin
 
   const navHref = ['/', '/user']
 
@@ -104,25 +104,26 @@ function Layout({ children }) {
         <meta name="theme-color" content={getBarColor(pathname)} />
         <link rel="icon" href="/favicon.png" />
       </Head>
+
       {pathname !== '/callback/mixin' ? (
         <>
           <TopBar url={backLink(pathname)} />
           <div className={styles.avatarWrap}>
             <div>
-              {isLogin ? (
-                navHref.includes(pathname) && (
-                  <div className={styles.avatar}>
-                    <Avatar
-                      imgSrc={state.userInfo?.avatar}
-                      onClick={handleClick}
-                    />
-                  </div>
-                )
-              ) : (
-                <div className={styles.login} onClick={() => authLogin()}>
-                  <span>{t('login')}</span>
-                </div>
-              )}
+              {isLogin
+                ? navHref.includes(pathname) && (
+                    <div className={styles.avatar}>
+                      <Avatar
+                        imgSrc={state.userInfo?.avatar}
+                        onClick={handleClick}
+                      />
+                    </div>
+                  )
+                : isLogin === false && (
+                    <div className={styles.login} onClick={() => authLogin()}>
+                      <span>{t('login')}</span>
+                    </div>
+                  )}
             </div>
           </div>
         </>

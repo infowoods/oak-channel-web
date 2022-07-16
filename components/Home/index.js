@@ -76,7 +76,7 @@ function Home() {
     console.log('>>> home state:', state)
     if (isLogin) {
       getList()
-    } else {
+    } else if (isLogin === false) {
       console.log('home not login')
       setLoading(false)
     }
