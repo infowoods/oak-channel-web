@@ -1,16 +1,20 @@
 import { useState, useEffect, useContext } from 'react'
 import { i18n, useTranslation } from 'next-i18next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
+import { ProfileContext } from '../../stores/useProfile'
+
 import TopBar from '../TopBar'
 import Avatar from '../../widgets/Avatar'
-import Icon from '../../widgets/Icon'
 import BottomNav from '../../widgets/BottomNav'
-import { useRouter } from 'next/router'
-import { getMixinContext, reloadTheme } from '../../services/api/mixin'
-import storageUtil from '../../utils/storageUtil'
-import { ProfileContext } from '../../stores/useProfile'
-import { authLogin } from '../../utils/loginUtil'
 import Loading from '../../widgets/Loading'
+
+import { getMixinContext, reloadTheme } from '../../services/api/mixin'
+
+import { authLogin } from '../../utils/loginUtil'
+import storageUtil from '../../utils/storageUtil'
+
 import styles from './index.module.scss'
 
 function Layout({ children }) {
@@ -33,7 +37,6 @@ function Layout({ children }) {
 
   const backLink = (path) => {
     if (path.includes('oak/')) {
-      console.log('////')
       return '/'
     }
   }
