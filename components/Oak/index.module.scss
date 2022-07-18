@@ -21,6 +21,14 @@
 
 .textArea {
   width: 100%;
+  textarea {
+    font-size: 16px;
+  }
+}
+
+.error {
+  color: $negative;
+  font-size: 14px;
 }
 
 .sendBtn {

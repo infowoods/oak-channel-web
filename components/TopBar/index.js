@@ -77,7 +77,7 @@ function TopBar(props) {
             />
             <div>
               <p>Owl Deliver</p>
-              <p>Subcribe all kinds of feeds</p>
+              <p>Subscribe all kinds of feeds</p>
             </div>
           </div>
         </div>

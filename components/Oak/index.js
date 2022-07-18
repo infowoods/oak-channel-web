@@ -119,11 +119,11 @@ function Details() {
                 />
               )}
               rules={{
-                required: 'txt 不能为空',
+                required: '* 不能为空',
               }}
             />
           </form>
-          <p>{txtErrors?.text?.message}</p>
+          <p className={styles.error}>{txtErrors?.text?.message}</p>
         </TabPane>
 
         {/* Markdown Form */}
@@ -136,11 +136,11 @@ function Details() {
                 <SimpleMDE options={mdeOptions} {...field} ref={null} />
               )}
               rules={{
-                required: 'md 不能为空',
+                required: '* 不能为空',
               }}
             />
           </form>
-          <p>{mdErrors?.markdown?.message}</p>
+          <p className={styles.error}>{mdErrors?.markdown?.message}</p>
         </TabPane>
       </Tabs>
 
