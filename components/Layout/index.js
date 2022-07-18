@@ -99,8 +99,8 @@ function Layout({ children }) {
       }`}
     >
       <Head>
-        <title>Oak TopicHub</title>
-        <meta name="description" content="Oak TopicHub" />
+        <title>Oak Topic Hub</title>
+        <meta name="description" content="Oak Topic Hub" />
         <meta name="theme-color" content={getBarColor(pathname)} />
         <link rel="icon" href="/favicon.png" />
       </Head>

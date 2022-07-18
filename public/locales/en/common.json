@@ -20,5 +20,9 @@
   "source_uri": "Source URI",
   "copy_success": "Successfully copied",
   "try_again": "Failed to copy, please try again",
-  "my_balance": "My Balance"
+  "my_balance": "My Balance",
+  "gift_balance": "Gift Balance",
+  "normal_balance": "Paid Balance",
+  "home": "Home",
+  "me": "Me"
 }

@@ -20,5 +20,9 @@
   "copy_success": "复制成功",
   "try_again": "复制失败，请重试",
   "will_expire": "即将到期",
-  "my_balance": "我的余额"
+  "my_balance": "我的余额",
+  "gift_balance": "初始额度",
+  "normal_balance": "购买额度",
+  "home": "首页",
+  "me": "我的"
 }

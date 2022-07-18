@@ -44,3 +44,8 @@ export function getOrder(data) {
 export function revokeToken(token) {
   return http.post('/oauth/revoke', { token })
 }
+
+// get balance
+export function getMe() {
+  return http.get('/users/me')
+}

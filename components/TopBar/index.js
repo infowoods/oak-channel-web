@@ -11,6 +11,7 @@ import storageUtil from '../../utils/storageUtil'
 
 import styles from './index.module.scss'
 import favImg from '../../public/favicon.png'
+import favImgOwl from '../../public/favicon-owl.png'
 
 function TopBar(props) {
   const { url } = props
@@ -68,7 +69,7 @@ function TopBar(props) {
         <div className={styles.botWrap}>
           <div className={styles.bot} onClick={() => handleBotClick('owl')}>
             <Image
-              src={favImg}
+              src={favImgOwl}
               alt="owl deliver"
               width={38}
               height={38}
@@ -76,7 +77,7 @@ function TopBar(props) {
             />
             <div>
               <p>Owl Deliver</p>
-              <p>Subceibe all kinds of feeds</p>
+              <p>Subcribe all kinds of feeds</p>
             </div>
           </div>
         </div>
