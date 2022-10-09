@@ -1,15 +1,22 @@
-export default {
-  set (key, value) {
+'use strict'
+
+const storageUtil = {
+  set: function (key, value) {
     localStorage.setItem(key, JSON.stringify(value))
   },
-  get (key) {
+  get: function (key) {
     const value = localStorage.getItem(key)
-    if (value !== 'undefined') {
+    if (!value) return
+    if (value === 'undefined') return
+    try {
       return JSON.parse(value)
+    } catch {
+      return
     }
-    return
   },
-  del (key) {
+  del: function (key) {
     localStorage.removeItem(key)
-  }
+  },
 }
+
+export default storageUtil

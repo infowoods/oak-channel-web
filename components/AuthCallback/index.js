@@ -1,20 +1,22 @@
 import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import { i18n } from 'next-i18next'
-import { ProfileContext } from '../../stores/useProfile'
-import { oakAuth } from '../../services/api/amo'
-import storageUtil from '../../utils/storageUtil'
-import { getMixinContext, getAccessToken } from '../../services/api/mixin'
-import Head from 'next/head'
+import { i18n, useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
-const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
+const Toast = dynamic(() => import('../../widgets/Toast'))
+
+import { CurrentLoginContext } from '../../contexts/currentLogin'
+import { getMixinContext } from '../../utils/pageUtil'
+import { signIn_withMixin } from '../../services/api/infowoods'
+import { mixinApi } from '../../services/api/mixin'
+
+import { saveToken, saveUserData } from '../../utils/loginUtil'
 import styles from './index.module.scss'
+import { APPS } from '../../constants'
 
 function AuthCallback() {
-  const [ctx, setCtx] = useState({})
-  const [, dispatch] = useContext(ProfileContext)
-  const { push } = useRouter()
+  const { t } = useTranslation('common')
+  const [curLogin, _] = useContext(CurrentLoginContext)
   const router = useRouter()
 
   const useQuery = () => {
@@ -27,57 +29,57 @@ function AuthCallback() {
   const query = useQuery()
 
   useEffect(() => {
-    const auth = async (token) => {
-      try {
-        const params = { mixin_access_token: token }
-        const data = await oakAuth(params)
-        console.log('auth data:', data)
-        if (data) {
-          dispatch({
-            type: 'userInfo',
-            userInfo: data,
-          })
-          dispatch({
-            type: 'isLogin',
-            isLogin: true,
-          })
-          storageUtil.set('user_info', data) // userInfo persistence
+    // login InfoWoods with mixin access token
+    const ctx = getMixinContext()
 
-          if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {
-            i18n.changeLanguage('en')
-            push('/', '/', { locale: 'en' })
-          } else {
-            push('/')
-          }
+    const login = async (token) => {
+      const params = {
+        app: APPS.current,
+        mixin_access_token: token,
+        conversation_id: ctx.conversation_id,
+      }
+      const data = await signIn_withMixin(params)
+
+      if (data?.access_token) {
+        curLogin.token = data.access_token
+        saveToken(ctx.conversation_id, data.access_token)
+
+        const user_data = {
+          // expiry_time: data.expiry_time,
+          user_name: data.user_name,
+          avatar: data.avatar,
         }
-      } catch (error) {
-        console.log('auth error:', error)
-        toast.error('Auth Failed')
+        curLogin.user = user_data
+        saveUserData(ctx.conversation_id, user_data)
+
+        if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {
+          i18n.changeLanguage('en')
+          // router.push('/', '/', { locale: 'en' })
+          window.location.href = '/en' //refresh page
+        } else {
+          // router.push('/')
+          window.location.href = '/' //refresh page
+        }
       }
     }
 
-    const getToken = async () => {
-      const token = await getAccessToken(query.code)
-      token && auth(token)
+    const getMixinToken_andLoginOwl = async () => {
+      const token = await mixinApi.getAccessToken(query.code)
+      token && login(token)
     }
 
-    query?.code && getToken()
+    if (query?.code) {
+      getMixinToken_andLoginOwl().catch((err) => {
+        console.log('err :>> ', err)
+        toast.error(t('login_failed'))
+        window.location.href = '/' //refresh page
+      })
+    }
   }, [query])
-
-  useEffect(() => {
-    const res = getMixinContext()
-    res && setCtx(res)
-  }, [])
 
   return (
     <div className={styles.main}>
-      <Head>
-        <title>Oak Topic Hub</title>
-        <meta name="description" content="Amo" />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <OwlToast />
+      <Toast />
     </div>
   )
 }
