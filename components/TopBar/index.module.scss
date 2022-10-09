@@ -1,77 +1,96 @@
 .bar {
-  padding-top: 12px;
-  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  .back {
-    transform: rotate(180deg);
-    font-size: 24px;
-    padding: 4px;
-    float: left;
-    cursor: pointer;
-    color: $contentPrimary;
-    &:hover {
-      background: $borderOpaque;
-      border-radius: 50%;
-    }
+  padding: 0.5em;
+
+  .left {
+    /* Forces side columns to stay same width */
+    flex: 0 0 1;
   }
+  .middle {
+    /* Lets middle column shrink/grow to available width */
+    flex: 1 1 auto;
 
-  .icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-
-    span {
-      color: $contentPrimary;
-      font-weight: bold;
-      font-size: 15px;
-    }
   }
-  .iconPadding {
-    padding-right: 32px;
+  .right {
+    /* Forces side columns to stay same width */
+    flex: 0 0 1;
   }
 }
 
-.inactive, .active {
-  color: $contentPrimary;
-  font-size: 18px;
-  margin-left: 4px;
-}
-
-.inactive {
-  transform: rotate(90deg);
-}
-
-.active {
-  transform: rotate(-90deg);
-}
-
-.botWrap {
-  padding: 24px 14px 48px 14px;
-}
-
-.bot {
+.app {
   display: flex;
+  justify-content: center;
   align-items: center;
+  min-width: 200px;
+
+  color: $contentPrimary;
   cursor: pointer;
-  &:hover {
-    p {
-      color: $accent !important;
-    }
-  }
 
   img {
+    min-width: 1.85em;
+    max-width: 1.85em;
+    min-height: 1.85em;
+    max-height: 1.85em;
     border-radius: 50%;
   }
 
-  > div {
-    margin-left: 12px;
-    > p {
-      color: $contentSecondry;
-      &:first-child {
-        font-weight: bold;
-        color: $contentPrimary;
-      }
+  .title {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    font-size: 1.25em;
+    font-weight: bold;
+  }
+
+  .arrow {
+    font-size: 1.25em;
+  }
+}
+
+.back {
+  float: left;
+  padding: 4px;
+
+  cursor: pointer;
+
+  font-size: 2em;
+  color: $contentPrimary;
+
+  &:hover {
+    background: $borderOpaque;
+    border-radius: 50%;
+  }
+}
+
+.login {
+  span {
+    cursor: pointer;
+
+    color: $contentPrimary;
+
+    &:hover {
+      color: $accent;
     }
+  }
+}
+
+.avatar {
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    min-width: 2em;
+    min-height: 2em;
+    max-width: 2em;
+    max-height: 2em;
+    border-radius: 50%;
   }
 }
