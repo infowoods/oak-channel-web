@@ -12,7 +12,7 @@ import favIconImg from '../../public/favicon.png'
 import styles from './index.module.scss'
 
 function TopBar(props) {
-  const { ctx, t, curLogin, backPath, setShowApps } = props
+  const { ctx, t, curLogin, backPath, showApps, setShowApps } = props
 
   const router = useRouter()
 
@@ -73,7 +73,9 @@ function TopBar(props) {
         >
           <Image src={favIconImg} alt="favicon" width={24} height={24} />
           <span className={styles.title}>{t(APPS.oak.title)}</span>
-          <RiArrowDownSLine className={styles.arrow} />
+          <span className={showApps ? styles.active : styles.passive}>
+            <RiArrowDownSLine className={styles.arrow} />
+          </span>
         </div>
       </div>
       <div className={styles.right}></div>

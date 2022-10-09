@@ -50,6 +50,19 @@
   .arrow {
     font-size: 1.25em;
   }
+  .passive {
+    svg {
+      transform: rotate(0deg);
+      transition: 0.2s ease-in-out;
+    }
+  }
+
+  .active {
+    svg {
+      transform: rotate(180deg);
+      transition: 0.2s ease-in-out;
+    }
+  }
 }
 
 .back {

@@ -1,0 +1,35 @@
+.appSheet {
+  padding: 1em 1em 2em 1em;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 0.5em;
+
+  img {
+    border-radius: 50%;
+  }
+
+  div {
+    margin-left: 1em;
+  }
+
+  .title {
+    font-weight: bold;
+    color: $contentPrimary;
+  }
+  .desc {
+    color: $contentSecondary;
+  }
+
+  &:hover {
+    .title {
+      color: $accent;
+    }
+
+    background: $backgroundPrimary;
+  }
+}

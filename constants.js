@@ -11,6 +11,7 @@ export const APPS = {
     description: 'owl_description',
     id: '60d30faa-3825-48da-ac1c-6aca1f573dd5',
     url: 'https://owl.infowoods.com/',
+    icon: '/icon-owl.png',
   },
   oak: {
     name: 'oak',
@@ -18,5 +19,6 @@ export const APPS = {
     description: 'oak_description',
     id: '22ec662a-e3b9-442c-bf6a-8aec0ea08b61',
     url: 'https://oak.infowoods.com/',
+    icon: '/icon-oak.png',
   },
 }
