@@ -1,18 +1,22 @@
 import { useRouter } from 'next/router'
-import Icon from '../Icon'
+import { useEffect, useContext, useState } from 'react'
+import dynamic from 'next/dynamic'
+import toast from 'react-hot-toast'
+
+import { RiHomeFill, RiSearch2Fill, RiUser4Fill } from 'react-icons/ri'
+import { CurrentLoginContext } from '../../contexts/currentLogin'
+const Toast = dynamic(() => import('../Toast'))
 import styles from './index.module.scss'
 
-function BottomNav({ t }) {
+function BottomNav({ ctx, t, curLogin }) {
   const { pathname, push } = useRouter()
-  const list = [
+  const navList = [
     {
       href: '/',
-      icon: 'apps',
       name: 'home',
     },
     {
       href: '/user',
-      icon: 'user',
       name: 'me',
     },
   ]
@@ -20,19 +24,28 @@ function BottomNav({ t }) {
   return (
     <div className={styles.bottomNav}>
       <div>
-        {list.map((item, idx) => (
+        {navList.map((item, idx) => (
           <div
             key={idx}
             className={`${
               pathname === item.href ? styles.active : styles.default
-            }`}
-            onClick={() => push(item.href)}
+            } ${styles.button}`}
+            onClick={() => {
+              if (!curLogin.token) {
+                toast(t('login_first'), { icon: '💁' })
+                return
+              }
+              push(item.href)
+            }}
           >
-            <Icon type={item.icon} />
-            <p>{t(item.name)}</p>
+            {item.name === 'home' && <RiHomeFill className={styles.icon} />}
+            {item.name === 'me' && <RiUser4Fill className={styles.icon} />}
+            <p className={styles.label}>{t(item.name)}</p>
           </div>
         ))}
       </div>
+
+      <Toast />
     </div>
   )
 }
