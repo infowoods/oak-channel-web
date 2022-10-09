@@ -1,13 +1,22 @@
-# 🍃 Frontend of Oak Hub
+Oak Channel Web
 
-> Create and manage new topic, used with [Owl Deliver](https://github.com/infowoods/owl-notifier).
+    This is a web project based on Next.js
 
-## Supported message type:
+Build Setup
 
-- Plain text
-- Post (Markdown)
+```shell
+# install dependencies
 
-## Features
+$ npm install
 
-- Multi language
-- Dark theme
+# serve with hot reload at localhost:3001
+
+$ yarn dev
+
+# build for production and launch server
+
+$ yarn build
+$ yarn start
+```
+
+For detailed explanation on how things work, checkout [Next.js](https://nextjs.org/) docs.
