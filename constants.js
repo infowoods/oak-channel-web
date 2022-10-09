@@ -4,6 +4,7 @@ export const MIXIN_API_HOST = 'https://mixin-api.zeromesh.net'
 export const MIXIN_OAUTH_HOST = 'https://mixin-www.zeromesh.net'
 
 export const APPS = {
+  current: 'oak',
   owl: {
     name: 'owl',
     title: 'owl_title',
