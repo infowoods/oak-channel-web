@@ -1,62 +1,80 @@
-import { useEffect, useContext, useState } from 'react'
-import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+import toast from 'react-hot-toast'
 
-import { ProfileContext } from '../../stores/useProfile'
-
-import { getMe } from '../../services/api/amo'
-
-import { logout } from '../../utils/loginUtil'
+import { getMixinContext } from '../../utils/pageUtil'
+import { getUserWallets } from '../../services/api/infowoods'
+import { handleInfowoodsApiError } from '../../utils/apiUtils'
+import { CurrentLoginContext } from '../../contexts/currentLogin'
+const SubPageCard = dynamic(() => import('../../widgets/SubPageCard'))
+const Toast = dynamic(() => import('../../widgets/Toast'))
+const TopUpSheet = dynamic(() => import('./TopUpSheet'))
+const Wallets = dynamic(() => import('./Wallets'))
 
 import styles from './index.module.scss'
+import { logout } from '../../utils/loginUtil'
 
 function User() {
   const { t } = useTranslation('common')
-  const [state, dispatch] = useContext(ProfileContext)
-  const isLogin = state.isLogin
-  const { push } = useRouter()
+  const [curLogin, _] = useContext(CurrentLoginContext)
+  const [inProcessOfTopUp, setInProcessOfTopUp] = useState(false)
+  const router = useRouter()
 
-  const [userData, setUserData] = useState({})
-
-  const getMeData = async () => {
-    try {
-      const data = await getMe()
-      setUserData(data)
-    } catch (error) {
-      if (error?.action === 'logout') {
-        push('/')
-        logout(dispatch)
-        return
-      }
+  function useMyWallets() {
+    const { data, error, mutate } = useSWR('me?wallets', getUserWallets)
+    if (error) {
+      handleInfowoodsApiError(error, t, curLogin)
+    }
+    return {
+      data: data,
+      isLoading: !error && !data,
+      isError: error,
+      refresh: () => {
+        mutate('me?wallets')
+      },
     }
   }
 
-  useEffect(() => {
-    if (isLogin) {
-      getMeData()
-    }
-    if (isLogin === false) {
-      push('/')
-    }
-  }, [isLogin])
+  const myWallets = useMyWallets()
 
   return (
-    <div>
-      {isLogin && (
-        <div>
-          <p className={styles.mine}>{t('my_balance')}</p>
-          <div className={styles.balance}>
-            <p>
-              <span>{t('gift_balance')}: </span>
-              {userData?.balances?.gift}
-            </p>
-            <p>
-              <span>{t('normal_balance')}: </span>
-              {userData?.balances?.normal}
-            </p>
-          </div>
-        </div>
+    <div className={styles.main}>
+      <Wallets
+        t={t}
+        toast={toast}
+        myWallets={myWallets}
+        setInProcessOfTopUp={setInProcessOfTopUp}
+      ></Wallets>
+
+      <div className={styles.logout}>
+        <span
+          onClick={() => {
+            const ctx = getMixinContext()
+            logout(ctx.conversation_id)
+            window.location.href = '/'
+          }}
+        >
+          {t('logout')}
+        </span>
+      </div>
+
+      {/* 充值组件 */}
+      {inProcessOfTopUp && (
+        <TopUpSheet
+          t={t}
+          toast={toast}
+          myWallets={myWallets}
+          handelOwlApiErrorP={(error) => {
+            handleInfowoodsApiError(error, t, curLogin)
+          }}
+          setInProcessOfTopUp={setInProcessOfTopUp}
+        />
       )}
+
+      <Toast />
     </div>
   )
 }

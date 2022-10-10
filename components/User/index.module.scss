@@ -1,17 +1,24 @@
-.mine {
-  color: $contentPrimary;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 36px;
-  margin-bottom: 18px;
+.loading {
+  margin-top: 25%;
+  opacity: 0.8;
 }
 
-.balance {
-  color: $contentSecondry;
-  >p {
-    font-size: 15px;
-    >span {
-      font-weight: bold;
-    }
+.sectionTitle {
+  color: $contentPrimary;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 2em 0 1em 0;
+}
+
+.logout {
+  width: 100%;
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin: 3em 0;
+
+  span {
+    padding: 1em;
+    color: $notice;
+    cursor: pointer;
   }
 }

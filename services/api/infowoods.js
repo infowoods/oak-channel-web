@@ -22,7 +22,7 @@ export function signIn_withMixin({ app, mixin_access_token, conversation_id }) {
 
 /**
  *
- * @param {app} String
+ * @param {app} String App name
  * @param {conversation_id}
  * @returns
  * check if is group
@@ -174,11 +174,12 @@ export function listGoods() {
 /**
  *
  * Create order
+ * @param {app} String App name
  * @returns pay links
  */
-export function createOrder(goods_id) {
+export function createOrder(app, goods_id) {
   let data = {
-    app: 'owl',
+    app: app,
     goods_id: goods_id,
   }
   return http.post('/orders/create', { data })
@@ -186,10 +187,11 @@ export function createOrder(goods_id) {
 
 /**
  * 查询订单状态
+ * @param {app} String App name
  */
-export function checkOrder({ mm_trace_id, mixpay_trace_id }) {
+export function checkOrder({ app, mm_trace_id, mixpay_trace_id }) {
   let data = {
-    app: 'owl',
+    app: app,
     mm_trace_id,
     mixpay_trace_id,
   }
