@@ -11,8 +11,9 @@ import { signIn_withMixin } from '../../services/api/infowoods'
 import { mixinApi } from '../../services/api/mixin'
 
 import { saveToken, saveUserData } from '../../utils/loginUtil'
-import styles from './index.module.scss'
 import { APPS } from '../../constants'
+
+import styles from './index.module.scss'
 
 function AuthCallback() {
   const { t } = useTranslation('common')
@@ -26,6 +27,7 @@ function AuthCallback() {
     if (!ready) return null
     return router.query
   }
+
   const query = useQuery()
 
   useEffect(() => {
@@ -38,6 +40,7 @@ function AuthCallback() {
         mixin_access_token: token,
         conversation_id: ctx.conversation_id,
       }
+
       const data = await signIn_withMixin(params)
 
       if (data?.access_token) {
@@ -75,7 +78,8 @@ function AuthCallback() {
         window.location.href = '/' //refresh page
       })
     }
-  }, [query])
+    // else, no code, waiting page
+  }, [query, curLogin, t])
 
   return (
     <div className={styles.main}>
