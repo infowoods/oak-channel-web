@@ -13,6 +13,7 @@ export function handleInfowoodsApiError(error, t, curLogin) {
 
     toLogin()
   } else {
-    toast.error(`${error.code} ${error.message}`, { duration: 2000 })
+    console.log('error.message :>> ', error.message)
+    toast.error(`${error.code} ${error.message}`, { duration: 4500 })
   }
 }
