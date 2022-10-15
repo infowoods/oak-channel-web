@@ -1,0 +1,62 @@
+.wrap {
+  padding: 1em 2em 2em 2em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; //水平居中
+
+  color: $contentPrimary;
+}
+
+.sheetTitle {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+
+  display: flex;
+  justify-content: center; //水平居中
+  align-items: center; //垂直居中
+
+  font-weight: bold;
+
+  svg {
+    font-size: larger;
+    margin-right: 0.25em;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  label {
+    color: $contentSecondary;
+    font-size: 1em;
+  }
+
+  .input,
+  .input input {
+    font-size: 1em;
+  }
+
+  .nth_info {
+    padding-right: 0.25em;
+    font-size: 0.85em;
+    display: block;
+    width: 15em !important;
+    color: $contentSecondary;
+    text-align: right;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+
+    margin: 2em 0 1em 0;
+
+    button {
+      width: 50% !important;
+      border-radius: 4px !important;
+    }
+  }
+}
