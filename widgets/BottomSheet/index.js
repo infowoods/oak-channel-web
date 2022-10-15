@@ -1,21 +1,26 @@
 import styles from './index.module.scss'
+import { RiCloseCircleFill } from 'react-icons/ri'
 
 function BottomSheet(props) {
-  const { className, children, onClose, title } = props
+  const { className, closeAtLeft, onClose, showing, children } = props
 
   return (
     <>
+      {showing && <div className={`${styles.overlay} ${className}`}></div>}
       <div
-        className={`${styles.overlay} ${className}`}
-        onClick={() => onClose()}
-      ></div>
-      <div
-        className={styles.sheet}
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
+        className={`${styles.sheet} ${
+          showing ? styles.showing : styles.hiding
+        }`}
       >
-        {children}
+        <div
+          className={`${styles.close} ${closeAtLeft && styles.left}`}
+          onClick={() => onClose()}
+        >
+          <RiCloseCircleFill />
+        </div>
+        <div className={styles.wrap}>
+          <div className={styles.container}>{children}</div>
+        </div>
       </div>
     </>
   )
