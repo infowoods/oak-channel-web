@@ -9,9 +9,9 @@ import { CurrentLoginContext } from '../../contexts/currentLogin'
 import { getMixinContext } from '../../utils/pageUtil'
 import { signIn_withMixin } from '../../services/api/infowoods'
 import { mixinApi } from '../../services/api/mixin'
-
 import { saveToken, saveUserData } from '../../utils/loginUtil'
 import { APPS } from '../../constants'
+import Loading from '../../widgets/Loading'
 
 import styles from './index.module.scss'
 
@@ -83,6 +83,7 @@ function AuthCallback() {
 
   return (
     <div className={styles.main}>
+      <Loading size={'lg'} />
       <Toast />
     </div>
   )

@@ -12,7 +12,7 @@ const Toast = dynamic(() => import('../../widgets/Toast'))
 
 const ChannelCards = dynamic(() => import('./ChannelCards'))
 const ChannelCreate = dynamic(() => import('./ChannelCreate'))
-import Loading from '../../widgets/Loading'
+
 import styles from './index.module.scss'
 
 function Home() {
@@ -29,8 +29,7 @@ function Home() {
 
   return (
     <div className={styles.main}>
-      {!ctx.platform && <Loading />}
-      {curLogin.token && (
+      {curLogin?.token && (
         <>
           <ChannelCards ctx={ctx} t={t} curLogin={curLogin} />
 
