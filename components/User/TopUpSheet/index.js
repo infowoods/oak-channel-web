@@ -2,15 +2,17 @@ import useSWR from 'swr'
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 const QRCode = require('qrcode.react')
+import { Button } from '@nextui-org/react'
 
 import {
   listGoods,
   createOrder,
   checkOrder,
 } from '../../../services/api/infowoods'
-import BottomSelection from '../../../widgets/BottomSelection'
-import { getMixinContext } from '../../../utils/pageUtil'
+
 import Loading from '../../../widgets/Loading'
+import BottomSheet from '../../../widgets/BottomSheet'
+import BottomSelection from '../../../widgets/BottomSelection'
 
 import styles from './index.module.scss'
 import { APPS } from '../../../constants'
@@ -39,8 +41,16 @@ function useGoodsList(handelOwlApiErrorP) {
 }
 
 function TopUpSheet(props) {
-  const { t, toast, myWallets, handelOwlApiErrorP, setInProcessOfTopUp } = props
-  const ctx = getMixinContext()
+  const {
+    ctx,
+    t,
+    curLogin,
+    myWallets,
+    handelOwlApiErrorP,
+    showTopupSheet,
+    setShowTopupSheet,
+  } = props
+
   const router = useRouter()
 
   const [stepName, setStepName] = useState(STEP_NAMES.SELECT_GOODS)
@@ -59,16 +69,10 @@ function TopUpSheet(props) {
   }
 
   function onClose() {
-    setStepName(STEP_NAMES.SELECT_GOODS)
+    setShowTopupSheet(false)
     setOrderTraceID(null)
     setOrderStatus('')
-    setInProcessOfTopUp(false)
-  }
-  function onCancel() {
-    setInProcessOfTopUp(false)
     setStepName(STEP_NAMES.SELECT_GOODS)
-    setOrderTraceID(null)
-    setOrderStatus('')
   }
 
   function autoCheckOrder() {
@@ -95,7 +99,7 @@ function TopUpSheet(props) {
           setOrderStatus(ok_msg)
           clearInterval(theTimer)
           setOrderTraceID(null)
-          toast.success(ok_msg)
+          toast.success(ok_msg, { duration: 3000 })
           onClose()
         } else {
           setOrderStatus(t('checking'))
@@ -135,46 +139,12 @@ function TopUpSheet(props) {
   }
 
   return (
-    <div className={`${styles.overlay}`} onClick={() => onClose()}>
-      <div className={styles.mask}></div>
-      <div
-        className={styles.sheet}
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      >
-        <div className={styles.title}>
-          <div>
-            <span onClick={() => onCancel()}>{t('cancel')}</span>
-          </div>
-          {/* middle title */}
-          <div>{getSheetTitle()}</div>
-
-          {/* right blank/confirm button */}
-          {stepName === STEP_NAMES.PAY_BY_MIXIN_QRCODE ||
-          stepName === STEP_NAMES.PAY_BY_MIXIN ||
-          stepName === STEP_NAMES.PAY_BY_MIXPAY ? (
-            <div>
-              <span
-                onClick={() => {
-                  // user confirm transferred
-                  setStepName(STEP_NAMES.CHECKING_ORDER)
-                  setOrderStatus(t('waiting_transfer'))
-                  autoCheckOrder() //start order checker
-                }}
-              >
-                {t('paid')}
-              </span>
-            </div>
-          ) : (
-            <div>{/* right blank */}</div>
-          )}
-        </div>
-
-        {/* bottom options - start */}
+    <BottomSheet onClose={onClose} showing={showTopupSheet}>
+      <div className={styles.wrap}>
+        <div className={styles.sheetTitle}>{getSheetTitle()}</div>
 
         {stepName === STEP_NAMES.SELECT_GOODS && goodsList.isLoading && (
-          <Loading size={40} className={styles.loading} />
+          <Loading size={'md'} />
         )}
         {stepName === STEP_NAMES.SELECT_GOODS && goodsList.data && (
           <BottomSelection
@@ -210,7 +180,7 @@ function TopUpSheet(props) {
               } catch {
                 setPayLinks(null)
                 setStepName(STEP_NAMES.SELECT_GOODS)
-                setInProcessOfTopUp(false)
+                setShowTopupSheet(false)
                 handelOwlApiErrorP(error)
               }
             }}
@@ -218,7 +188,7 @@ function TopUpSheet(props) {
         )}
 
         {stepName === STEP_NAMES.SELECT_PAYMENTS && !payLinks && (
-          <Loading size={40} className={styles.loading} />
+          <Loading size={'md'} />
         )}
         {stepName === STEP_NAMES.SELECT_PAYMENTS && payLinks && (
           // 在 MM 中将直接弹出MM支付对话框，不会进行到这里。
@@ -265,9 +235,32 @@ function TopUpSheet(props) {
           <div className={styles.notice}>{orderStatus}</div>
         )}
 
-        {/* bottom options - end */}
+        {/* confirm button */}
+        {stepName === STEP_NAMES.PAY_BY_MIXIN_QRCODE ||
+        stepName === STEP_NAMES.PAY_BY_MIXIN ||
+        stepName === STEP_NAMES.PAY_BY_MIXPAY ? (
+          <div className={styles.buttons}>
+            <Button
+              type="button"
+              onClick={() => {
+                // user confirm transferred
+                setStepName(STEP_NAMES.CHECKING_ORDER)
+                setOrderStatus(t('waiting_transfer'))
+                autoCheckOrder() //start order checker
+              }}
+              auto
+              rounded
+              // bordered
+              size="md"
+            >
+              {t('paid')}
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
-    </div>
+    </BottomSheet>
   )
 }
 
