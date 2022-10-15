@@ -4,6 +4,7 @@
   align-items: center;
 
   padding: 0.5em;
+  margin-bottom: 1em;
 
   .left {
     /* Forces side columns to stay same width */
@@ -49,6 +50,9 @@
 
   .arrow {
     font-size: 1.25em;
+
+    display: flex;
+    align-items: center;
   }
   .passive {
     svg {

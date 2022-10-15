@@ -1,5 +1,6 @@
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { NextUIProvider, createTheme } from '@nextui-org/react'
 import { appWithTranslation } from 'next-i18next'
 const i18nConfig = require('../next-i18next.config')
 import {
@@ -13,6 +14,16 @@ import 'nprogress/nprogress.css'
 
 import Layout from '../components/Layout'
 
+const darkTheme = createTheme({
+  type: 'dark',
+  theme: {},
+})
+
+const lightTheme = createTheme({
+  type: 'light',
+  theme: {},
+})
+
 const TopProgressBar = dynamic(
   () => {
     return import('../components/TopProgressBar')
@@ -22,15 +33,18 @@ const TopProgressBar = dynamic(
 
 function MyApp({ Component, pageProps }) {
   const loginData = useReducer(loginDataReducer, LoginData)
+  const [activeTheme, setActiveTheme] = useState('light')
 
   return (
     <>
-      <TopProgressBar />
-      <CurrentLoginContext.Provider value={loginData}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </CurrentLoginContext.Provider>
+      <NextUIProvider theme={activeTheme === 'dark' ? darkTheme : lightTheme}>
+        <TopProgressBar />
+        <CurrentLoginContext.Provider value={loginData}>
+          <Layout setActiveTheme={setActiveTheme}>
+            <Component {...pageProps} />
+          </Layout>
+        </CurrentLoginContext.Provider>
+      </NextUIProvider>
     </>
   )
 }

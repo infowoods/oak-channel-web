@@ -1,35 +1,81 @@
-.appSheet {
-  padding: 1em 1em 2em 1em;
-}
+.wrap {
+  padding: 2em;
 
-.app {
   display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0.5em;
-  border-radius: 0.5em;
+  flex-direction: column;
+  justify-content: center; //水平居中
 
-  img {
-    border-radius: 50%;
-  }
+  color: $contentPrimary;
 
-  div {
-    margin-left: 1em;
-  }
+  .sheetTitle {
+    font-size: 1.5em;
+    margin-bottom: 1em;
 
-  .title {
+    display: flex;
+    justify-content: center; //水平居中
+    align-items: center; //垂直居中
+
     font-weight: bold;
-    color: $contentPrimary;
-  }
-  .desc {
-    color: $contentSecondary;
+
+    svg {
+      font-size: larger;
+      margin-right: 0.25em;
+    }
   }
 
-  &:hover {
-    .title {
-      color: $accent;
+  .app {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    cursor: pointer;
+    padding: 0.5em;
+    border-radius: 0.5em;
+
+    .selectedIcon {
+      flex: 1;
+      height: 100%;
+      width: auto;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    background: $backgroundPrimary;
+    img {
+      border-radius: 50%;
+    }
+
+    div {
+      margin-left: 1em;
+    }
+
+    .title {
+      color: $contentPrimary;
+    }
+    .desc {
+      color: $contentSecondary;
+    }
+
+    &:hover {
+      .title {
+        color: $accent;
+      }
+
+      background: $backgroundPrimary;
+    }
+
+    &.selected {
+      cursor: default;
+      &:hover {
+        .title {
+          color: $contentPrimary;
+        }
+      }
+
+      * {
+        font-weight: bold;
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 import { RiArrowLeftLine, RiArrowDownSLine } from 'react-icons/ri'
+
 import { toLogin } from '../../utils/loginUtil'
 import Avatar from '../../widgets/Avatar'
 
@@ -25,15 +26,6 @@ function TopBar(props) {
     }
   }
 
-  const handleAvatarClick = () => {
-    const link = avatarLink(router.pathname)
-    if (link) {
-      router.push(avatarLink(router.pathname))
-    } else {
-      return
-    }
-  }
-
   return (
     <div className={styles.bar}>
       <div className={styles.left}>
@@ -51,7 +43,12 @@ function TopBar(props) {
             <Avatar
               isGroup={curLogin?.group?.is_group}
               imgSrc={curLogin?.user?.avatar}
-              onClick={() => handleAvatarClick()}
+              onClick={() => {
+                const link = avatarLink(router.pathname)
+                if (link) {
+                  router.push(link)
+                }
+              }}
             />
           </div>
         )}

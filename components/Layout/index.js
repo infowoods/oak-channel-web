@@ -4,7 +4,6 @@ import { i18n, useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import TopBar from '../TopBar'
-import Loading from '../../widgets/Loading'
 import BottomNav from '../../widgets/BottomNav'
 
 import { CurrentLoginContext } from '../../contexts/currentLogin'
@@ -16,7 +15,7 @@ const AppsJumper = dynamic(() => import('./AppsJumper'))
 
 import styles from './index.module.scss'
 
-function Layout({ children }) {
+function Layout({ setActiveTheme, children }) {
   const { t } = useTranslation('common')
   const router = useRouter()
   const [curLogin, _] = useContext(CurrentLoginContext)
@@ -25,9 +24,11 @@ function Layout({ children }) {
   const [barColor, setBarColor] = useState('#999999')
   const navHref = ['/', '/user']
 
-  const getBackPath = (curPath) => {
+  const backPath = (curPath) => {
     if (curPath.startsWith('/user/') && curPath.length > 6) {
       return '/user'
+    } else if (curPath.startsWith('/channels/') && curPath.length > 10) {
+      return '/'
     }
   }
 
@@ -41,16 +42,25 @@ function Layout({ children }) {
         window.matchMedia('(prefers-color-scheme: dark)').matches
       ) {
         const clr = '#080808'
-        setBarColor(clr)
         document
           .querySelector("meta[name='theme-color']")
           .setAttribute('content', clr)
+
+        setActiveTheme('dark')
+        // hack for next-org-ui bug
+        document.documentElement.setAttribute('style', 'color-scheme:dark;')
+
+        setBarColor(clr)
       } else {
         const clr = '#FFFFFF'
-        setBarColor(clr)
         document
           .querySelector("meta[name='theme-color']")
           .setAttribute('content', clr)
+
+        setActiveTheme('light')
+        // hack for next-org-ui bug
+        document.documentElement.setAttribute('style', 'color-scheme:light;')
+        setBarColor(clr)
       }
       reloadTheme()
     }
@@ -80,7 +90,7 @@ function Layout({ children }) {
     }
 
     reloadTheme()
-  }, [])
+  }, [curLogin, router, setActiveTheme])
 
   return (
     <>
@@ -96,30 +106,33 @@ function Layout({ children }) {
           <link rel="icon" href="/favicon.png" />
         </Head>
 
-        {router.pathname === '/callback/mixin' ? (
+        {router.pathname !== '/callback/mixin' && (
+          <TopBar
+            ctx={ctx}
+            t={t}
+            curLogin={curLogin}
+            backPath={backPath(router.pathname)}
+            showApps={showApps}
+            setShowApps={setShowApps}
+          />
+        )}
+
+        {children}
+
+        {router.pathname !== '/callback/mixin' && (
           <>
-            <Loading size={36} className={styles.loading} />
-          </>
-        ) : (
-          <>
-            <TopBar
+            {navHref.includes(router.pathname) && (
+              <BottomNav ctx={ctx} t={t} curLogin={curLogin} />
+            )}
+
+            <AppsJumper
               ctx={ctx}
               t={t}
-              curLogin={curLogin}
-              backPath={getBackPath(router.pathname)}
               showApps={showApps}
               setShowApps={setShowApps}
             />
           </>
         )}
-
-        {children}
-
-        {navHref.includes(router.pathname) && (
-          <BottomNav ctx={ctx} t={t} curLogin={curLogin} />
-        )}
-
-        {showApps && <AppsJumper t={t} setShowApps={setShowApps} />}
       </div>
     </>
   )

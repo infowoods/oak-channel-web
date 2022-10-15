@@ -2,45 +2,10 @@
   max-width: 680px;
   margin: 0 auto;
   padding: 0 1em 65px 1em;
-  background: $backgroundPrimary;
-}
-
-.bgLight {
-  background: $backgroundPrimary;
-}
-
-.bgGray {
-  background: $backgroundSecondary;
-}
-
-// .main {
-//   min-height: calc(100vh - 210px);
-//   @include responsive(xs) {
-//     min-height: calc(100vh - 180px);
-//   }
-//   padding: 0 1em;
-// }
-
-.noTopBar {
-  max-width: 680px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: $backgroundPrimary;
-}
-
-.notInit {
-  max-width: 680px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: $backgroundPrimary;
+  background: transparent;
 }
 
 .loading {
   padding-top: 64px;
   z-index: 99;
-}
-
-.tempSlot {
-  min-height: calc(100vh - 110px);
-  background: $backgroundPrimary;
 }
