@@ -1,0 +1,79 @@
+.main {
+  margin-top: 2em;
+  padding: 1em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: transparent;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: $contentPrimary;
+
+  .icon {
+    font-size: 3em;
+    margin-right: 0.2em;
+    // color: $contentPrimary;
+  }
+
+  .profile {
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: column;
+    font-size: 1em;
+    overflow-wrap: anywhere;
+    // overflow-x: hidden;
+
+    .title {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .subscribers {
+      color: $contentSecondary;
+    }
+
+    .uri {
+      color: $contentSecondary;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      .copy {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6em;
+
+  margin-top: 5em;
+
+  button {
+    // background: $backgroundPrimary;
+    // color: $contentPrimary;
+    // border: 2px solid $contentPrimary;
+    // &:hover {
+    //   background: $contentPrimary;
+    //   color: $backgroundPrimary;
+    // }
+    min-width: 5em !important;
+    max-width: 5em !important;
+    min-height: 5em !important;
+    max-height: 5em !important;
+    padding: 1em !important;
+    border-radius: 50% !important;
+  }
+}

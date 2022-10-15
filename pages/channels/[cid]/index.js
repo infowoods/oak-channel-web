@@ -1,6 +1,6 @@
-import Details from '../../../components/Oak'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 const i18nConfig = require('../../../next-i18next.config')
+import Channel from '../../../components/Channel'
 
 export async function getStaticProps({ locale }) {
   return {
@@ -12,9 +12,9 @@ export async function getStaticProps({ locale }) {
 
 export async function getStaticPaths() {
   return {
-      paths: [], //indicates that no page needs be created at build time
-      fallback: 'blocking' //indicates the type of fallback
+    paths: [], //indicates that no page needs be created at build time
+    fallback: 'blocking', //indicates the type of fallback
   }
 }
 
-export default Details
+export default Channel
