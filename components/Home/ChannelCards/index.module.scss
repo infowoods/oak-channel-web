@@ -1,0 +1,68 @@
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  color: $contentPrimary;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 2em 0 1em 0;
+
+  svg {
+    margin-right: 0.5em;
+  }
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin-bottom: 2em;
+
+  .card {
+    .desc {
+      color: $contentSecondary;
+    }
+
+    .status {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: 0.85em;
+    }
+
+    .state {
+      font-size: 0.85em;
+      display: flex;
+      background: $backgroundSecondary;
+      border-radius: 3px;
+      padding: 0.1em 0.25em;
+
+      align-items: center;
+      color: $contentSecondary;
+      // height: 100%;
+
+      .value {
+        margin-left: 0.2em;
+        color: $contentPrimary;
+      }
+    }
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+
+  .emptyImage {
+    path {
+      fill: $contentSecondary;
+    }
+  }
+  .emptyText {
+    font-size: 1em;
+    margin-top: 0.5em;
+    margin-left: -1em;
+    color: $contentSecondary;
+  }
+}

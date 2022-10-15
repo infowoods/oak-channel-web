@@ -1,186 +1,34 @@
-.avatar, .login {
+.main {
+  margin-top: 2em;
+  background: transparent;
+}
+
+.channelAdd {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  padding: 1.5em;
+  margin: 0 1em 0 1em;
+
   cursor: pointer;
-  margin-top: 6px;
-  img {
-    border-radius: 50%;
-  }
-}
 
-.homeLoading {
-  margin-top: 40%;
-}
+  border-width: 2px;
+  border-style: solid;
+  border-color: $borderLightAccent;
+  border-radius: 0.5em;
 
-.ufo {
-  margin-top: 30%;
-  text-align: center;
-
-  >i {
-    font-size: 100px;
-    color: $contentSecondry;
-  }
-}
-
-.mine {
-  color: $contentPrimary;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 36px;
-  margin-bottom: 18px;
-}
-
-.edit {
-  display: inline-block;
-  color: $contentSecondry;
-  line-height: 20px;
-  padding-bottom: 2px;
-  cursor: pointer;
-  >i {
-    vertical-align: middle;
-  }
-  &:hover {
-    color: $contentNotice;
-  }
-}
-
-.divider {
-  border-top: 4px solid $contentStateDisabled;
-  border-radius: 5px;
-  width: 8px;
-  margin-top: 12px;
-  margin-bottom: 20px;
-}
-
-.card {
-  box-shadow: 0px 0px 20px $shadow;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  position: relative;
-
-  >p {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
+  svg {
+    flex: 1;
+    fill: $borderLightAccent;
+    font-size: 3em;
+    font-weight: lighter;
     color: $contentPrimary;
-
-    &:first-child {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
   }
-}
 
-.copy {
-  >span {
-    cursor: pointer;
-  }
-}
-
-.pushLoading {
-  display: inline;
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.post {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 32px;
-  color: $contentPrimary;
-  cursor: pointer;
   &:hover {
-    color: $positive;
-  }
-}
-
-.sheet {
-  padding: 0 12px;
-  margin-bottom: 48px;
-  font-size: 14px;
-  color: $contentPrimary;
-
-  >div {
-    &:first-child {
-      margin-bottom: 21px;
-      >p {
-        line-height: 21px;
-      }
+    border-color: $accent;
+    svg {
+      fill: $accent;
     }
-  }
-
-  .title {
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 8px;
-  }
-
-  .label {
-    >p {
-      line-height: 21px;
-      margin-bottom: 4px;
-    }
-    .input {
-      width: 100%;
-      background-color: $backgroundPrimary;
-    }
-    .textArea {
-      width: 100%;
-    }
-  }
-
-  .error {
-    color: $notice;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-}
-
-.current {
-  background-color: $backgroundSecondary;
-  padding: 12px;
-  border-radius: 6px;
-}
-
-.modifyTo {
-  background-color: $backgroundSecondary;
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.modifyLoading {
-  padding: 120px 0;
-}
-
-.create {
-  margin: 24px 0 48px 0;
-  display: flex;
-  line-height: 24px;
-
-  >span {
-    margin-left: 8px;
-    border-bottom: 2px solid $accent;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    color: $contentAccent;
-    &:hover {
-      color: $borderLightAccent;
-    }
-  }
-}
-
-.createLoading {
-  line-height: 24px;
-  margin-left: 6px;
-  div {
-    border: 2px solid $accent;
-    border-left-color: rgba(0, 0, 0, 0);
   }
 }
