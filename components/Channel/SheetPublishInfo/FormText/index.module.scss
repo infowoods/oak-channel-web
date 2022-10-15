@@ -1,0 +1,43 @@
+.form {
+  padding: 2em 1em 1em 1em;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2em;
+
+  label,
+  .label {
+    color: $contentSecondary;
+    font-size: 1em;
+
+    text-align: left;
+  }
+
+  input,
+  textarea,
+  button {
+    font-size: 1em;
+  }
+
+  .nth_info {
+    padding-right: 0.25em;
+    font-size: 0.85em;
+    display: block;
+    width: 15em !important;
+    color: $contentSecondary;
+    text-align: right;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+
+    margin: 2em 0 1em 0;
+
+    button {
+      width: 50% !important;
+      border-radius: 4px !important;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 .indicator {
   height: 2px;
   background: $contentPrimary;
-  transition: transform .15s;
+  transition: transform 0.2s;
 }
 
 .panesOuter {
@@ -10,14 +10,13 @@
 
 .panes {
   display: flex;
-  padding-top: 18px;
-  transition: transform .2s;
+  padding-top: 1em;
+  transition: transform 0.2s;
 }
 
 .pane {
   flex: 1;
   overflow: hidden;
-
 }
 
 .paneUnactive {
@@ -36,12 +35,13 @@
 }
 
 .tabBar {
+  margin-top: 1em;
   display: flex;
 }
 
 .bar {
   display: inline-block;
-  color: $contentSecondry;
+  color: $contentSecondary;
   font-size: 16px;
   font-weight: bold;
   line-height: 21px;
