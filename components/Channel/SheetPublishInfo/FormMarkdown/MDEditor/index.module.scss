@@ -1,0 +1,113 @@
+.label {
+  font-size: 1em;
+  color: $contentSecondary;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.5em;
+
+  border: 2px solid $contentSecondary;
+  border-radius: 0.75rem;
+
+  &:hover,
+  &:active {
+    border-color: $contentPrimary;
+    .menu {
+      border-bottom-color: $contentPrimary;
+    }
+  }
+
+  transition: all ease 0.2s;
+}
+
+.menu {
+  border-bottom: 2px solid $contentSecondary;
+
+  padding: 0.25em 0.5em;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.1em;
+
+  .divider {
+    // display: block;
+    width: 2px;
+    background-color: $borderOpaque;
+    margin: 0 0.15em;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.25em;
+    font-weight: bold;
+
+    cursor: pointer;
+    color: $contentPrimary;
+    padding: 0.15em 0.35em;
+    border-radius: 3px;
+
+    &:hover,
+    &:active,
+    &.active {
+      background: $contentPrimary;
+      color: $backgroundPrimary;
+    }
+  }
+
+  transition: all ease 0.2s;
+}
+
+.editArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  min-height: 20em;
+  max-height: 20em;
+  overflow-y: scroll;
+  border: none;
+  outline: none;
+
+  &.onPreview {
+    .textarea {
+      width: 0%;
+      display: none;
+    }
+    .preview {
+      width: 100%;
+      display: block;
+    }
+  }
+}
+
+.textarea {
+  width: 100%;
+  min-height: 20em;
+  background: $backgroundPrimary;
+  resize: none;
+  outline: none;
+  border: none;
+  padding: 0.5em;
+}
+
+.preview {
+  width: 0%;
+  display: none;
+  padding: 0.5em;
+  height: fit-content;
+  border: none;
+
+  p {
+    padding: 0.5em 0;
+  }
+  a {
+    color: blueviolet;
+  }
+  li {
+    list-style: disc;
+  }
+}

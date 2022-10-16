@@ -1,30 +1,17 @@
 import React from 'react'
+import ReactDom from 'react-dom'
 import useSWR from 'swr'
 import { useState, useEffect, useContext, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
 import { Button, Input, useInput } from '@nextui-org/react'
-import {
-  RiFileCopy2Line,
-  RiArrowGoBackLine,
-  RiArrowGoForwardLine,
-} from 'react-icons/ri'
-import { AiOutlineClear } from 'react-icons/ai'
-
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import { EditorContent, useEditor, Editor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { createMarkdownEditor } from 'tiptap-markdown'
 
 import { publishMarkdownInfo } from '../../../../services/api/infowoods'
 import { handleInfowoodsApiError } from '../../../../utils/apiUtils'
-import { copyText } from '../../../../utils/copyUtil'
 import Loading from '../../../../widgets/Loading'
 
+import MDEditor from './MDEditor'
 import styles from './index.module.scss'
-
-const MarkdownEditor = createMarkdownEditor(Editor)
 
 function FormMarkdown(props) {
   const { ctx, t, curLogin, channel, refreshChannel, infoFees } = props
@@ -35,21 +22,17 @@ function FormMarkdown(props) {
   const [publishing, setPublishing] = useState(false)
   const mdFee = infoFees?.data?.publish?.MARKDOWN
 
-  const [editor, _] = useState(
-    new MarkdownEditor({
-      placeholder: t('required_filed'),
-      extensions: [StarterKit, Highlight, Typography],
-      content: '',
-    })
-  )
+  function resetAll() {
+    textTitle.reset()
+    textBody.reset()
+    textSource.reset()
+  }
 
   function toPublishInfo() {
-    const text = editor.getMarkdown()
-    // const text = textBody.value
+    const text = textBody.value
     // validate values
     if (!text) {
       toast.error(t('text_body_required'))
-      editor.commands.focus()
       return
     }
 
@@ -65,6 +48,7 @@ function FormMarkdown(props) {
       .then((r) => {
         infoFees.refresh()
         toast.success(t('published'), { duration: 4000 })
+        resetAll()
       })
       .catch((err) => {
         handleInfowoodsApiError(err, t, curLogin)
@@ -96,48 +80,14 @@ function FormMarkdown(props) {
           }}
           value={textTitle.value}
         />
-        <div>
-          <span className={styles.label}>{t('markdown_body')}</span>
-          <div className={styles.editorWrap}>
-            <div className={styles.menu}>
-              <button
-                title={t('copy_all')}
-                onClick={() => {
-                  copyText(editor.getMarkdown(), t)
-                }}
-              >
-                <RiFileCopy2Line />
-              </button>
-              <button
-                title={t('clear_all')}
-                onClick={() => {
-                  editor.commands.clearContent(true)
-                }}
-              >
-                <AiOutlineClear />
-              </button>
-              <div className={styles.divider}></div>
-              <button
-                title={t('undo')}
-                onClick={() => {
-                  editor.commands.undo()
-                }}
-              >
-                <RiArrowGoBackLine />
-              </button>
-              <button
-                title={t('redo')}
-                onClick={() => {
-                  editor.commands.redo()
-                }}
-              >
-                <RiArrowGoForwardLine />
-              </button>
-            </div>
 
-            <EditorContent className={styles.editArea} editor={editor} />
-          </div>
-        </div>
+        <MDEditor
+          ctx={ctx}
+          t={t}
+          curLogin={curLogin}
+          mdValue={textBody.value}
+          setMdValue={textBody.setValue}
+        />
 
         <Input
           {...textSource.bindings}
