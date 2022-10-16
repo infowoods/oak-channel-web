@@ -131,8 +131,8 @@ function SheetEditChannel(props) {
                     size={'xl'}
                     // initialChecked={searchable.value}
                     checked={searchable.value}
-                    iconOn={<MdSearch filled={true} />}
-                    iconOff={<MdSearchOff filled={true} />}
+                    iconOn={<MdSearch />}
+                    iconOff={<MdSearchOff />}
                     onBlur={(e) => {
                       e.preventDefault()
                     }}

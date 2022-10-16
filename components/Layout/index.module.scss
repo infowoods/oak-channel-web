@@ -1,11 +1,13 @@
 .wrap {
   max-width: 680px;
   margin: 0 auto;
-  padding: 0 1em 65px 1em;
+  padding: 0.25em 1em 65px 1em;
   background: transparent;
-}
 
-.loading {
-  padding-top: 64px;
-  z-index: 99;
+  height: 100vh;
+
+  @include responsive(md) {
+    border-left: 1px solid $borderOpaque;
+    border-right: 1px solid $borderOpaque;
+  }
 }

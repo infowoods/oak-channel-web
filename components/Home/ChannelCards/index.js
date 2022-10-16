@@ -8,9 +8,10 @@ import {
   RiMoneyDollarCircleLine,
   RiUserFollowLine,
   RiSearchLine,
-  RiCloseLine,
-  RiCheckLine,
+  RiIndeterminateCircleLine,
+  RiCheckboxCircleLine,
 } from 'react-icons/ri'
+
 import { MdSearch, MdSearchOff } from 'react-icons/md'
 
 import { handleInfowoodsApiError } from '../../../utils/apiUtils'
@@ -92,9 +93,9 @@ function Channels(props) {
                           </span>
                           <span className={styles.value}>
                             {item.searchable ? (
-                              <RiCheckLine />
+                              <RiCheckboxCircleLine />
                             ) : (
-                              <RiCloseLine />
+                              <RiIndeterminateCircleLine />
                             )}
                           </span>
                         </Grid>

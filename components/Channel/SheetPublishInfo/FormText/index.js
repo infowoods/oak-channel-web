@@ -50,6 +50,7 @@ function FormText(props) {
       .then((r) => {
         infoFees.refresh()
         toast.success(t('published'), { duration: 4000 })
+        resetAll()
       })
       .catch((err) => {
         handleInfowoodsApiError(err, t, curLogin)
