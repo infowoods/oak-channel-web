@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 const QRCode = require('qrcode.react')
 import { Button } from '@nextui-org/react'
+import toast from 'react-hot-toast'
 
 import {
   listGoods,
