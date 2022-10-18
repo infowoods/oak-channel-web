@@ -44,10 +44,9 @@ function Wallets(props) {
 
         {myWallets.data && (
           <>
-            <div className={styles.title}>{t('revenue')}</div>
+            <div className={styles.title}>{t('pending_earnings')}</div>
             <div className={styles.wallet}>
               <div>
-                {/* <span className={styles.nut_icon}>🌰 {t('revenue')} </span> */}
                 <span className={styles.val}>
                   {myWallets.data.wallets.revenue}
                 </span>
@@ -55,7 +54,7 @@ function Wallets(props) {
               </div>
 
               <div className={styles.tip}>
-                <span>{t('revenue_tip')}</span>
+                <span>{t('earnings_tip')}</span>
               </div>
             </div>
           </>
