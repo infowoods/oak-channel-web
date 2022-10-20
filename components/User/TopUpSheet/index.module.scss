@@ -47,14 +47,23 @@
 }
 
 .tip {
-  text-align: center;
-  font-size: small;
-  color: $contentSecondary;
-  padding: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $contentPrimary;
+  padding: 0.25em;
+
+  svg {
+    margin-right: 2em;
+  }
 }
 
 .notice {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: $contentNotice;
   padding: 0.25em;
 }

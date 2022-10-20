@@ -25,6 +25,7 @@ const STEP_NAMES = {
   PAY_BY_MIXIN: 'PAY_BY_MIXIN', // in Mixin Messenger
   PAY_BY_MIXPAY: 'PAY_BY_MIXPAY', // ExinOne MixPay.me
   CHECKING_ORDER: 'CHECKING_ORDER',
+  IS_ERROR: 'IS_ERROR',
   FINISH_ALL: 'FINISH_ALL',
 }
 
@@ -58,8 +59,8 @@ function TopUpSheet(props) {
   const [payLinks, setPayLinks] = useState(null)
   const [orderTraceID, setOrderTraceID] = useState(null)
   const [orderStatus, setOrderStatus] = useState(null)
-  const [paymentMethod, setPaymentMethod] = useState(null)
   const [qrCodeValue, setQrCodeValue] = useState(null)
+  const [theTimer, setTheTimer] = useState(null)
   const [paymentURI, setPaymentURI] = useState(null)
   const goodsList = useGoodsList(handelOwlApiErrorP)
   const goodsOptions = []
@@ -70,22 +71,25 @@ function TopUpSheet(props) {
   }
 
   function onClose() {
-    setShowTopupSheet(false)
+    clearInterval(theTimer)
     setOrderTraceID(null)
-    setOrderStatus('')
+    setOrderStatus(null)
     setStepName(STEP_NAMES.SELECT_GOODS)
+    setShowTopupSheet(false)
   }
 
   function autoCheckOrder() {
-    const theTimer = setInterval(async () => {
+    var tryCount = 0
+    const tmr = setInterval(async () => {
       if (!orderTraceID) {
-        clearInterval(theTimer)
+        clearInterval(tmr)
         return
       }
       try {
+        tryCount += 1
         let params = { app: APPS.current }
-        if (paymentMethod === 'mixpay') {
-          params.mixmpay_trace_id = orderTraceID
+        if (stepName === STEP_NAMES.PAY_BY_MIXPAY) {
+          params.mixpay_trace_id = orderTraceID
         } else {
           params.mm_trace_id = orderTraceID
         }
@@ -98,7 +102,7 @@ function TopUpSheet(props) {
           myWallets.refresh()
           const ok_msg = t('top_up_ok') + `+${rsp.goods?.coin_amount} NUT`
           setOrderStatus(ok_msg)
-          clearInterval(theTimer)
+          clearInterval(tmr)
           setOrderTraceID(null)
           toast.success(ok_msg, { duration: 3000 })
           onClose()
@@ -106,12 +110,16 @@ function TopUpSheet(props) {
           setOrderStatus(t('checking'))
         }
       } catch (err) {
-        clearInterval(theTimer)
-        setOrderStatus(err.message)
-        handelOwlApiErrorP(err)
+        if (tryCount > 10) {
+          //timeout
+          setStepName(STEP_NAMES.IS_ERROR)
+          clearInterval(tmr)
+          setOrderStatus(err.message)
+          handelOwlApiErrorP(err)
+        }
       }
-    }, 3000)
-    return theTimer
+    }, 5000)
+    setTheTimer(tmr)
   }
 
   function getSheetTitle() {
@@ -134,7 +142,10 @@ function TopUpSheet(props) {
       return t('pay_by_mixin')
     } else if (stepName === STEP_NAMES.PAY_BY_MIXPAY) {
       return t('pay_by_mixpay')
-    } else if (stepName === STEP_NAMES.CHECKING_ORDER) {
+    } else if (
+      stepName === STEP_NAMES.CHECKING_ORDER ||
+      stepName === STEP_NAMES.IS_ERROR
+    ) {
       return t('checking_order')
     }
   }
@@ -172,7 +183,6 @@ function TopUpSheet(props) {
                     {
                       label: t('pay_by_mixpay'),
                       value: `${d.payment_links.mixpay}`,
-                      // &returnTo=https://${window.location.host}/order/check?mixpay_trace_id=${d.trace_id}
                       image: '/mixpay-logo.png',
                     },
                   ]
@@ -196,14 +206,15 @@ function TopUpSheet(props) {
           // 普通浏览器中访问，才会到此步骤，选择多种支付方式，
           <BottomSelection
             options={payLinks}
-            onSelect={async (val) => {
+            onSelect={(val) => {
+              setPaymentURI(val)
+
               if (val.startsWith('mixin://')) {
                 setStepName(STEP_NAMES.PAY_BY_MIXIN_QRCODE)
                 setQrCodeValue(val)
               } else {
                 // .startsWith("https://mixpay.me/")
                 setStepName(STEP_NAMES.PAY_BY_MIXPAY)
-                setPaymentURI(val)
                 window.open(val, '_blank')
               }
             }}
@@ -226,14 +237,23 @@ function TopUpSheet(props) {
         )}
 
         {stepName === STEP_NAMES.PAY_BY_MIXIN && (
-          <div className={styles.notice}>{t('tip_of_pay_by_mixin')}</div>
+          <div className={styles.tip}>{t('tip_of_pay_by_mixin')}</div>
         )}
         {stepName === STEP_NAMES.PAY_BY_MIXPAY && (
-          <div className={styles.notice}>{t('tip_of_pay_by_mixpay')}</div>
+          <div className={styles.tip}>{t('tip_of_pay_by_mixpay')}</div>
         )}
 
         {stepName === STEP_NAMES.CHECKING_ORDER && (
-          <div className={styles.notice}>{orderStatus}</div>
+          <div className={styles.tip}>
+            <Loading size={'sm'} />
+            <span>{orderStatus}</span>
+          </div>
+        )}
+
+        {stepName === STEP_NAMES.IS_ERROR && (
+          <div className={styles.notice}>
+            <spa>{orderStatus}</spa>
+          </div>
         )}
 
         {/* confirm button */}
@@ -243,7 +263,7 @@ function TopUpSheet(props) {
           <div className={styles.buttons}>
             <Button
               type="button"
-              onClick={() => {
+              onPress={() => {
                 // user confirm transferred
                 setStepName(STEP_NAMES.CHECKING_ORDER)
                 setOrderStatus(t('waiting_transfer'))
