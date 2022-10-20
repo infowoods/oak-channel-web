@@ -1,5 +1,4 @@
 import { useEffect, useContext, useState } from 'react'
-import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'

@@ -18,7 +18,6 @@ function Wallets(props) {
             <div className={styles.title}>{t('balances')}</div>
             <div className={styles.wallet}>
               <div>
-                {/* <span className={styles.nut_icon}>👛</span> */}
                 <span className={styles.val}>{myWallets.data.wallets.NUT}</span>
                 {' NUT'}
                 {' , '}

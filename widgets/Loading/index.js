@@ -16,7 +16,7 @@ Loading.defaultProps = {
 
 Loading.propTypes = {
   color: PropTypes.oneOf(['primary', 'secondary', 'accent']),
-  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg']),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg','xl']),
 }
 
 export default Loading

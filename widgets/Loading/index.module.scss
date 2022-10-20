@@ -2,42 +2,52 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  margin: 0.2em;
 }
 
 .icon {
   display: block;
   border-radius: 50%;
+  border-style: solid;
 
   &.primary {
-    border: 3px solid $contentPrimary;
+    border-color: $contentPrimary;
     border-left-color: transparent;
   }
 
   &.secondary {
-    border: 3px solid $contentSecondary;
+    border-color: $contentSecondary;
     border-left-color: transparent;
   }
 
   &.accent {
-    border: 3px solid $borderAccent;
+    border-color: $borderAccent;
     border-left-color: transparent;
   }
 
+  &.xl {
+    border-width: 3px;
+    width: 2.5em;
+    height: 2.5em;
+  }
   &.lg {
+    border-width: 3px;
     width: 2em;
     height: 2em;
   }
-
   &.md {
+    border-width: 3px;
     width: 1.4em;
     height: 1.4em;
   }
-
   &.sm {
+    border-width: 2px;
     width: 0.8em;
     height: 0.8em;
   }
   &.xs {
+    border-width: 2px;
     width: 0.6em;
     height: 0.6em;
   }
