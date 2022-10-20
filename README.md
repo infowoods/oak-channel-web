@@ -1,22 +1,23 @@
-Oak Channel Web
+Oak Channel Web App
 
     This is a web project based on Next.js
 
-Build Setup
+1. Create `.env.local` file
 
-```shell
+2. Build Setup
+
+```sh
 # install dependencies
 
 $ npm install
 
-# serve with hot reload at localhost:3001
+# lint code
+
+$ yarn lint
+
+# serve with hot reload at localhost:3000
 
 $ yarn dev
-
-# build for production and launch server
-
-$ yarn build
-$ yarn start
 ```
 
 For detailed explanation on how things work, checkout [Next.js](https://nextjs.org/) docs.
