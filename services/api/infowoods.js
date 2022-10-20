@@ -27,7 +27,11 @@ export function signIn_withMixin({ app, mixin_access_token, conversation_id }) {
  * @returns
  * check if is group
  */
-export function checkGroup(data) {
+export function checkGroup({ app, conversation_id }) {
+  const data = {
+    app,
+    conversation_id,
+  }
   return http.post('/oauth/mixin/is_group', { data })
 }
 

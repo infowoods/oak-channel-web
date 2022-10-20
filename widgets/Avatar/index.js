@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 function Avatar(props) {
   const { isGroup = false, imgSrc, ...others } = props
-  const defaultAvatar = '/default-avatar.png'
+  const defaultAvatar = '/images/default-avatar.png'
 
   return (
     <Image

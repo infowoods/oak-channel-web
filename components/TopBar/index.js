@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-
+import toast from 'react-hot-toast'
 import { RiArrowLeftLine, RiArrowDownSLine } from 'react-icons/ri'
 
-import { toLogin } from '../../utils/loginUtil'
+import { toLogin, saveGroupData } from '../../utils/loginUtil'
+import { checkGroup } from '../../services/api/infowoods'
 import Avatar from '../../widgets/Avatar'
-
 import { APPS } from '../../constants'
 import favIconImg from '../../public/favicon.png'
 
@@ -14,7 +14,6 @@ import styles from './index.module.scss'
 
 function TopBar(props) {
   const { ctx, t, curLogin, backPath, showApps, setShowApps } = props
-
   const router = useRouter()
 
   const avatarLink = (path) => {
@@ -26,9 +25,28 @@ function TopBar(props) {
     }
   }
 
+  useEffect(() => {
+    if (ctx) {
+      if (ctx.conversation_id) {
+        checkGroup({
+          app: APPS.current,
+          conversation_id: ctx.conversation_id,
+        })
+          .then((data) => {
+            saveGroupData(ctx.conversation_id, data)
+            curLogin.group = data
+          })
+          .catch((error) => {
+            toast.error(error.message)
+          })
+      }
+    }
+  }, [ctx, curLogin])
+
   return (
     <div className={styles.bar}>
       <div className={styles.left}>
+        {curLogin?.group?.is_group}
         {backPath && (
           <RiArrowLeftLine
             className={styles.back}
@@ -53,11 +71,9 @@ function TopBar(props) {
           </div>
         )}
         {!backPath && !curLogin?.user && (
-          <div className={styles.login} onClick={() => toLogin()}>
-            <span>
-              {curLogin?.group?.is_group ? t('owner_login') : t('login')}
-            </span>
-          </div>
+          <span className={styles.login} onClick={() => toLogin()}>
+            {curLogin?.group?.is_group ? t('group_login') : t('login')}
+          </span>
         )}
       </div>
 
@@ -69,7 +85,7 @@ function TopBar(props) {
           }}
         >
           <Image src={favIconImg} alt="favicon" width={24} height={24} />
-          <span className={styles.title}>{t(APPS.oak.title)}</span>
+          <span className={styles.title}>{t(APPS[APPS.current].title)}</span>
           <span className={showApps ? styles.active : styles.passive}>
             <RiArrowDownSLine className={styles.arrow} />
           </span>
