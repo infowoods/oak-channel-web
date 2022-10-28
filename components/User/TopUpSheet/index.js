@@ -29,10 +29,10 @@ const STEP_NAMES = {
   FINISH_ALL: 'FINISH_ALL',
 }
 
-function useGoodsList(handelOwlApiErrorP) {
+function useGoodsList(handleInfowoodsApiErrorP) {
   const { data, error } = useSWR('goods', listGoods)
   if (error) {
-    handelOwlApiErrorP(error)
+    handleInfowoodsApiErrorP(error)
   }
 
   return {
@@ -48,7 +48,7 @@ function TopUpSheet(props) {
     t,
     curLogin,
     myWallets,
-    handelOwlApiErrorP,
+    handleInfowoodsApiErrorP,
     showTopupSheet,
     setShowTopupSheet,
   } = props
@@ -62,7 +62,7 @@ function TopUpSheet(props) {
   const [qrCodeValue, setQrCodeValue] = useState(null)
   const [theTimer, setTheTimer] = useState(null)
   const [paymentURI, setPaymentURI] = useState(null)
-  const goodsList = useGoodsList(handelOwlApiErrorP)
+  const goodsList = useGoodsList(handleInfowoodsApiErrorP)
   const goodsOptions = []
   if (goodsList.data) {
     for (var item of goodsList.data) {
@@ -93,6 +93,7 @@ function TopUpSheet(props) {
         } else {
           params.mm_trace_id = orderTraceID
         }
+
         const rsp = await checkOrder(params)
         if (!rsp || !rsp.status) {
           setOrderStatus(t('waiting_transfer'))
@@ -110,12 +111,12 @@ function TopUpSheet(props) {
           setOrderStatus(t('checking'))
         }
       } catch (err) {
-        if (tryCount > 10) {
+        if (tryCount > 1) {
           //timeout
           setStepName(STEP_NAMES.IS_ERROR)
           clearInterval(tmr)
           setOrderStatus(err.message)
-          handelOwlApiErrorP(err)
+          handleInfowoodsApiErrorP(err)
         }
       }
     }, 5000)
@@ -178,12 +179,12 @@ function TopUpSheet(props) {
                     {
                       label: t('pay_by_mixin'),
                       value: d.payment_links.mm,
-                      image: '/mixin-logo.png',
+                      image: '/images/mixin-logo.png',
                     },
                     {
                       label: t('pay_by_mixpay'),
                       value: `${d.payment_links.mixpay}`,
-                      image: '/mixpay-logo.png',
+                      image: '/images/mixpay-logo.png',
                     },
                   ]
                   setPayLinks(links)
@@ -192,7 +193,7 @@ function TopUpSheet(props) {
                 setPayLinks(null)
                 setStepName(STEP_NAMES.SELECT_GOODS)
                 setShowTopupSheet(false)
-                handelOwlApiErrorP(error)
+                handleInfowoodsApiErrorP(error)
               }
             }}
           ></BottomSelection>
@@ -252,7 +253,7 @@ function TopUpSheet(props) {
 
         {stepName === STEP_NAMES.IS_ERROR && (
           <div className={styles.notice}>
-            <spa>{orderStatus}</spa>
+            <span>{orderStatus}</span>
           </div>
         )}
 
